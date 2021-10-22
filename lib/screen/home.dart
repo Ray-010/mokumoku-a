@@ -13,11 +13,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> checkUser() async{
     final uid = SharedPrefs.getUid();
     if(uid == '') {
-      // await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomsTopPage()));
       await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUpScreen()));
     } else {
-      // await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomsTopPage()));
-      await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUpScreen()));
+      await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomsTopPage()));
     }
   }
 

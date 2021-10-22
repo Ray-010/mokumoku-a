@@ -26,6 +26,7 @@ class Firestore {
     UserModel myProfile = UserModel(
       color: profile.data()?['color'],
       uid: uid,
+      imageIndex: profile.data()?['imageIndex'],
     );
     return myProfile;
   }
@@ -64,7 +65,8 @@ class Firestore {
         UserModel user = await getProfile(doc.id);
         UserModel userProfile = UserModel(
           color: user.color,
-          uid: user.uid
+          uid: user.uid,
+          imageIndex: user.imageIndex
         );
         roomUsersList.add(userProfile);
       }

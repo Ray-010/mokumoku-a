@@ -55,6 +55,14 @@ class _StudyPageState extends State<StudyPage> {
     Colors.black,
   ];
 
+  List<String> imagesList = [
+    'images/MokuMoku_alpha_icon_01.PNG',
+    'images/MokuMoku_alpha_icon_02.PNG',
+    'images/MokuMoku_alpha_icon_03.PNG',
+    'images/MokuMoku_alpha_icon_04.PNG',
+    'images/MokuMoku_alpha_icon_05.PNG',
+  ];
+
   @override
   Future<void> dispose() async {
     String myUid = SharedPrefs.getUid();
@@ -106,10 +114,16 @@ class _StudyPageState extends State<StudyPage> {
                         padding: const EdgeInsets.only(top:16.0),
                         child: Container(
                           padding: EdgeInsets.all(8.0),
+
+                          // ToDo：ここのアイコン画像表示をスマートにしたい
                           child:  CircleAvatar(
                             // backgroundColor: Theme.of(context).primaryColor,
-                            backgroundColor: colorsList[userInfo.color],
                             radius: MediaQuery.of(context).size.width / 7,
+                            child: CircleAvatar(
+                              backgroundImage: AssetImage(imagesList[userInfo.imageIndex]),
+                              backgroundColor: colorsList[userInfo.color],
+                              radius: MediaQuery.of(context).size.width / 7,
+                            ),
                           ),
                         ),
                       ),
@@ -160,9 +174,16 @@ class _StudyPageState extends State<StudyPage> {
                                         children: <Widget>[
                                           Container(
                                             alignment: Alignment.topCenter,
-                                            child: CircleAvatar(
-                                              backgroundColor: colorsList[inRoomUserList[index].color],
+
+                                            // ToDo：ここのアイコン画像表示をスマートにしたい
+                                            child:  CircleAvatar(
+                                              // backgroundColor: Theme.of(context).primaryColor,
                                               radius: MediaQuery.of(context).size.width / 8.5,
+                                              child: CircleAvatar(
+                                                backgroundImage: AssetImage(imagesList[inRoomUserList[index].imageIndex]),
+                                                backgroundColor: colorsList[inRoomUserList[index].color],
+                                                radius: MediaQuery.of(context).size.width / 8.5,
+                                              ),
                                             ),
                                           ),
                                         Container(
