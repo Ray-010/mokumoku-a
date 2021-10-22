@@ -1,12 +1,12 @@
 class UserModel{
   String uid;
-  String color;
+  int color;
 
   UserModel({required this.color, required this.uid});
 }
 
 class UserRoomModel {
-  String color;
+  int color;
 
   UserRoomModel(this.color);
 }

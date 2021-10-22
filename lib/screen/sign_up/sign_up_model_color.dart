@@ -4,7 +4,7 @@ import 'package:mokumoku_a/utils/shared_prefs.dart';
 class SignUpColorModel {
 
   static Future signUp(colorIndex) async {
-    print('in signup');
+    print('in signupcolor');
     final doc = FirebaseFirestore.instance.collection('users').doc();
     await doc.set({
       'color': colorIndex,

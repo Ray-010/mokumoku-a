@@ -31,7 +31,30 @@ class _StudyPageState extends State<StudyPage> {
     userInfo = await Firestore.getProfile(widget.myUid);
     print('getMyUid done');
   }
-  
+
+  List<Color> colorsList = [
+    Colors.red,
+    Colors.pink,
+    Colors.purple,
+    Colors.deepPurple,
+    Colors.indigo,
+    Colors.blue,
+    Colors.lightBlue,
+    Colors.cyan,
+    Colors.teal,
+    Colors.green,
+    Colors.lightGreen,
+    Colors.lime,
+    Colors.yellow,
+    Colors.amber,
+    Colors.orange,
+    Colors.deepOrange,
+    Colors.brown,
+    Colors.grey,
+    Colors.blueGrey,
+    Colors.black,
+  ];
+
   @override
   Future<void> dispose() async {
     String myUid = SharedPrefs.getUid();
@@ -75,6 +98,7 @@ class _StudyPageState extends State<StudyPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+
                     // アイコン画像
                     Expanded(
                       flex: 2,
@@ -84,7 +108,7 @@ class _StudyPageState extends State<StudyPage> {
                           padding: EdgeInsets.all(8.0),
                           child:  CircleAvatar(
                             // backgroundColor: Theme.of(context).primaryColor,
-                            backgroundColor: Colors.blue,
+                            backgroundColor: colorsList[userInfo.color],
                             radius: MediaQuery.of(context).size.width / 7,
                           ),
                         ),
@@ -98,7 +122,7 @@ class _StudyPageState extends State<StudyPage> {
               }
             }
           ),
-          
+
           // 部屋に入っているユーザー表示
           StreamBuilder(
             stream: Firestore.roomRef.doc(widget.documentId).collection('users').snapshots(),
@@ -137,7 +161,7 @@ class _StudyPageState extends State<StudyPage> {
                                           Container(
                                             alignment: Alignment.topCenter,
                                             child: CircleAvatar(
-                                              backgroundColor: Colors.blue,
+                                              backgroundColor: colorsList[inRoomUserList[index].color],
                                               radius: MediaQuery.of(context).size.width / 8.5,
                                             ),
                                           ),
