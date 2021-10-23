@@ -31,7 +31,39 @@ class _StudyPageState extends State<StudyPage> {
     userInfo = await Firestore.getProfile(widget.myUid);
     print('getMyUid done');
   }
-  
+
+  List<Color> colorsList = [
+    Colors.red,
+    Colors.pink,
+    Colors.purple,
+    Colors.deepPurple,
+    Colors.indigo,
+    Colors.blue,
+    Colors.lightBlue,
+    Colors.cyan,
+    Colors.teal,
+    Colors.green,
+    Colors.lightGreen,
+    Colors.lime,
+    Colors.yellow,
+    Colors.amber,
+    Colors.orange,
+    Colors.deepOrange,
+    Colors.brown,
+    Colors.grey,
+    Colors.blueGrey,
+    Colors.black,
+  ];
+
+  List<String> imagesList = [
+    'images/MokuMoku_alpha_icon_01.PNG',
+    'images/MokuMoku_alpha_icon_02.PNG',
+    'images/MokuMoku_alpha_icon_03.PNG',
+    'images/MokuMoku_alpha_icon_04.PNG',
+    'images/MokuMoku_alpha_icon_05.PNG',
+    'images/MokuMoku_alpha_icon_06.PNG',
+  ];
+
   @override
   Future<void> dispose() async {
     String myUid = SharedPrefs.getUid();
@@ -75,6 +107,7 @@ class _StudyPageState extends State<StudyPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+
                     // アイコン画像
                     Expanded(
                       flex: 2,
@@ -82,10 +115,16 @@ class _StudyPageState extends State<StudyPage> {
                         padding: const EdgeInsets.only(top:16.0),
                         child: Container(
                           padding: EdgeInsets.all(8.0),
+
+                          // ToDo：ここのアイコン画像表示をスマートにしたい
                           child:  CircleAvatar(
                             // backgroundColor: Theme.of(context).primaryColor,
-                            backgroundColor: Colors.blue,
                             radius: MediaQuery.of(context).size.width / 7,
+                            child: CircleAvatar(
+                              backgroundImage: AssetImage(imagesList[userInfo.imageIndex]),
+                              backgroundColor: colorsList[userInfo.color],
+                              radius: MediaQuery.of(context).size.width / 7,
+                            ),
                           ),
                         ),
                       ),
@@ -98,7 +137,7 @@ class _StudyPageState extends State<StudyPage> {
               }
             }
           ),
-          
+
           // 部屋に入っているユーザー表示
           StreamBuilder(
             stream: Firestore.roomRef.doc(widget.documentId).collection('users').snapshots(),
@@ -136,9 +175,16 @@ class _StudyPageState extends State<StudyPage> {
                                         children: <Widget>[
                                           Container(
                                             alignment: Alignment.topCenter,
-                                            child: CircleAvatar(
-                                              backgroundColor: Colors.blue,
+
+                                            // ToDo：ここのアイコン画像表示をスマートにしたい
+                                            child:  CircleAvatar(
+                                              // backgroundColor: Theme.of(context).primaryColor,
                                               radius: MediaQuery.of(context).size.width / 8.5,
+                                              child: CircleAvatar(
+                                                backgroundImage: AssetImage(imagesList[inRoomUserList[index].imageIndex]),
+                                                backgroundColor: colorsList[inRoomUserList[index].color],
+                                                radius: MediaQuery.of(context).size.width / 8.5,
+                                              ),
                                             ),
                                           ),
                                         Container(

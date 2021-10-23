@@ -97,22 +97,20 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
               ],
               // タブバー
               bottom: TabBar(
-                labelColor: Colors.blue,
+                labelColor: Colors.white,
                 labelStyle: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
-                unselectedLabelColor: Colors.grey,
+                unselectedLabelColor: Colors.white,
                 unselectedLabelStyle: TextStyle(
                   fontWeight: FontWeight.normal,
                 ),
                 tabs: [
                   Tab(
-                    // icon: Icon(Icons.android),
-                    text: "ゆるゆる",
+                    text: '固定部屋',
                   ),
                   Tab(
-                      // icon: Icon(Icons.phone_iphone),
-                      text: "つよつよ",
+                    text: '作成部屋',
                   ),
                 ],
               ),
@@ -124,6 +122,78 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
               ),
               centerTitle: true,
             ),
+
+            drawer: Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+
+                  // ここにMokuMokuのメインキャラかロゴを入れる
+                  DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      image: DecorationImage(
+                        image: AssetImage('images/MokuMoku_logo_01.png'),
+                      ),
+                    ),
+                    child: null,
+                  ),
+
+                  ListTile(
+                    leading: Icon(Icons.info_outline),
+                    title: Text(
+                      'MokuMokuについて',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                    onTap: (){
+                      print('MokuMokuについての説明');
+                    },
+                  ),
+
+                  ListTile(
+                    leading: Icon(Icons.feed_outlined),
+                    title: Text(
+                      'アンケート',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                    onTap: (){
+
+                    },
+                  ),
+
+                  ListTile(
+                    leading: Icon(Icons.message_outlined),
+                    title: Text(
+                      'ご意見・ご要望',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                    onTap: (){
+                      print('チャット形式で自由に意見');
+                    },
+                  ),
+
+                  ListTile(
+                    leading: Icon(Icons.share),
+                    title: Text(
+                      'シェア',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                    onTap: (){
+                      print('SHARE');
+                    },
+                  ),
+                ],
+              ),
+            ),
+
             body: TabBarView(
               children: [
                 Center(

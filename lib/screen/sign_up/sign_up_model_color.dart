@@ -1,17 +1,19 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:mokumoku_a/utils/shared_prefs.dart';
 
-class SignUpModel extends ChangeNotifier {
-  final color = 'blue';
+class SignUpColorModel {
 
-  Future signUp() async {
-    print('in signup');
+  static int imageIndex = Random().nextInt(6);
+
+  static Future signUp(colorIndex) async {
+    print('in signupcolor');
     final doc = FirebaseFirestore.instance.collection('users').doc();
     await doc.set({
-      'color': color,
+      'color': colorIndex,
       'createdAt': Timestamp.now(),
+      'imageIndex': imageIndex,
     });
     await SharedPrefs.setUid(doc.id);
   }

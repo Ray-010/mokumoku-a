@@ -7,25 +7,13 @@ class Firestore {
   static final userRef = _firestoreInstance.collection('users');
   static final roomRef = _firestoreInstance.collection('rooms');
 
-  // アカウント作成
-  static Future signUp(String uid, color) async {
-    try {
-      userRef.doc(uid).set({
-        'color': color,
-        'createdAt': Timestamp.now()
-      });
-      await SharedPrefs.setUid(uid);
-    } catch(e) {
-      
-    }
-  }
-
   // ユーザ情報取得
   static Future<UserModel> getProfile(String uid) async {
     final profile = await userRef.doc(uid).get();
     UserModel myProfile = UserModel(
       color: profile.data()?['color'],
       uid: uid,
+      imageIndex: profile.data()?['imageIndex'],
     );
     return myProfile;
   }
@@ -64,7 +52,8 @@ class Firestore {
         UserModel user = await getProfile(doc.id);
         UserModel userProfile = UserModel(
           color: user.color,
-          uid: user.uid
+          uid: user.uid,
+          imageIndex: user.imageIndex
         );
         roomUsersList.add(userProfile);
       }
