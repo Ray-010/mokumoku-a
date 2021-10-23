@@ -115,7 +115,6 @@ class _StudyPageState extends State<StudyPage> {
                         padding: const EdgeInsets.only(top:16.0),
                         child: Container(
                           padding: EdgeInsets.all(8.0),
-
                           // ToDo：ここのアイコン画像表示をスマートにしたい
                           child:  CircleAvatar(
                             // backgroundColor: Theme.of(context).primaryColor,
