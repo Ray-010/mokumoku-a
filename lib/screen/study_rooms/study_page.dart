@@ -61,6 +61,7 @@ class _StudyPageState extends State<StudyPage> {
     'images/MokuMoku_alpha_icon_03.PNG',
     'images/MokuMoku_alpha_icon_04.PNG',
     'images/MokuMoku_alpha_icon_05.PNG',
+    'images/MokuMoku_alpha_icon_06.PNG',
   ];
 
   @override

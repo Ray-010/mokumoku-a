@@ -133,7 +133,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                     decoration: BoxDecoration(
                       color: Colors.blue,
                       image: DecorationImage(
-                        image: AssetImage('images/takenoko02.png'),
+                        image: AssetImage('images/MokuMoku_logo_01.png'),
                       ),
                     ),
                     child: null,

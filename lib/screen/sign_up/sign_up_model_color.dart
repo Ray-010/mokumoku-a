@@ -5,7 +5,7 @@ import 'package:mokumoku_a/utils/shared_prefs.dart';
 
 class SignUpColorModel {
 
-  static int imageIndex = Random().nextInt(5);
+  static int imageIndex = Random().nextInt(6);
 
   static Future signUp(colorIndex) async {
     print('in signupcolor');
