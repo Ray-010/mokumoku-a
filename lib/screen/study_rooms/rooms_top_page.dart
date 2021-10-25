@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mokumoku_a/menu/questionnaire/question_first.dart';
 import 'package:mokumoku_a/model/user.dart';
 import 'package:mokumoku_a/screen/sign_up/sign_up.dart';
 import 'package:mokumoku_a/screen/study_rooms/add_study_room.dart';
@@ -161,20 +162,12 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                       ),
                     ),
                     onTap: (){
-
-                    },
-                  ),
-
-                  ListTile(
-                    leading: Icon(Icons.message_outlined),
-                    title: Text(
-                      'ご意見・ご要望',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    onTap: (){
-                      print('チャット形式で自由に意見');
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QuestionFirstPage(),
+                        ),
+                      );
                     },
                   ),
 
