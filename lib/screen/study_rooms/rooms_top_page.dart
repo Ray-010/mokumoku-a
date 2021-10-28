@@ -1,32 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mokumoku_a/model/user.dart';
-import 'package:mokumoku_a/screen/sign_up/sign_up.dart';
 import 'package:mokumoku_a/screen/study_rooms/add_study_room.dart';
 import 'package:mokumoku_a/screen/study_rooms/study_page.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
-import 'package:mokumoku_a/utils/shared_prefs.dart';
 
 class RoomsTopPage extends StatefulWidget {
+  final uid;
+  RoomsTopPage(this.uid);
 
   @override
   _RoomsTopPageState createState() => _RoomsTopPageState();
 }
 
 class _RoomsTopPageState extends State<RoomsTopPage> {
-  late UserModel userInfo;
   final _formKey = GlobalKey<FormState>();
   bool roomIn = true;
 
-  final Stream<QuerySnapshot> _roomsStream = FirebaseFirestore.instance.collection('rooms').orderBy('finishedTime', descending: true).snapshots();
-
-  CollectionReference rooms = FirebaseFirestore.instance.collection('rooms');
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
-
   Future<void> batchDelete() {
     WriteBatch batch = FirebaseFirestore.instance.batch();
-    return rooms.get().then((querySnapshot) {
+    return Firestore.roomRef.get().then((querySnapshot) {
       querySnapshot.docs.forEach((document) {
         var finished = document['finishedTime'].toDate().add(Duration(minutes: 30));
         var now = DateTime.now();
@@ -39,18 +32,6 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
     });
   }
 
-  Future<void> getMyUid() async {
-    try {
-      String myUid = SharedPrefs.getUid();
-      userInfo = await Firestore.getProfile(myUid);
-      print('getMyUid done');
-    } catch(e) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) async {
-        await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUpScreen()));
-      }); 
-    }
-  }
-
   @override
   void initState() {
     batchDelete();
@@ -60,7 +41,9 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _roomsStream,
+      stream: Firestore.roomRef
+          .orderBy('finishedTime', descending: true)
+          .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text('Something went wrong');
@@ -270,11 +253,11 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                               // roomInがTrueであれば入ることができる
                               if (data['roomIn']) {
                                 // 部屋に入る人をrooms>usersにセットする
-                                final myUid = SharedPrefs.getUid();
-                                Firestore.addUsers(document.id, myUid);
-                                Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => StudyPage(data['title'], data['finishedTime'].toDate(), data['members'], document.id, myUid),
-                                ));
+                                Firestore.addUsers(document.id, widget.uid).then((_) {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => StudyPage(data['title'], data['finishedTime'].toDate(), data['members'], document.id, widget.uid),
+                                  ));
+                                });
                               }
                             },
                           ),
@@ -413,11 +396,10 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                                                   onPressed: () async {
                                                     if (data['roomIn']) {
                                                       if (_formKey.currentState!.validate()) {
-                                                        final myUid = SharedPrefs.getUid();
-                                                        await Firestore.addUsers(document.id, myUid);
+                                                        await Firestore.addUsers(document.id, widget.uid);
                                                         Navigator.pop(context);
                                                         Navigator.push(context, MaterialPageRoute(
-                                                          builder: (context) => StudyPage(data['title'], data['finishedTime'].toDate(), data['members'], document.id, myUid),
+                                                          builder: (context) => StudyPage(data['title'], data['finishedTime'].toDate(), data['members'], document.id, widget.uid,),
                                                         ));
                                                       }
                                                     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:mokumoku_a/screen/sign_up/sign_up_model_color.dart';
 import 'package:mokumoku_a/screen/study_rooms/rooms_top_page.dart';
+import 'package:mokumoku_a/utils/shared_prefs.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -113,7 +114,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   onPressed: () {
                     SignUpColorModel.signUp(colorsList.indexOf(currentColor)).then((value) {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomsTopPage()));
+                      final uid = SharedPrefs.getUid();
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomsTopPage(uid)));
                     } );
                   },
                   child: Padding(
