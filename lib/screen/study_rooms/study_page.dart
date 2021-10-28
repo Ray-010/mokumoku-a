@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mokumoku_a/model/user.dart';
+import 'package:mokumoku_a/screen/study_rooms/study_page_timer.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
-import 'package:mokumoku_a/utils/shared_prefs.dart';
 
 // 勉強部屋に入った後の画面 実際の勉強部屋
 class StudyPage extends StatefulWidget {
@@ -18,19 +18,6 @@ class StudyPage extends StatefulWidget {
 }
 
 class _StudyPageState extends State<StudyPage> {
-
-  List inRoomUserList = [];
-  int inRoomUserNum = 0;
-  Future<void> createUsers() async {
-    inRoomUserList = await Firestore.getUsers(widget.documentId, widget.myUid, inRoomUserList);
-    inRoomUserNum = inRoomUserList.length;
-    print('createUsers');
-  }
-  late UserModel userInfo;
-  Future<void> getMyUid() async{
-    userInfo = await Firestore.getProfile(widget.myUid);
-    print('getMyUid done');
-  }
 
   List<Color> colorsList = [
     Colors.red,
@@ -65,9 +52,14 @@ class _StudyPageState extends State<StudyPage> {
   ];
 
   @override
+  void initState() {
+    Firestore.sendFirstMessage(widget.documentId, widget.myUid);
+    super.initState();
+  }
+
+  @override
   Future<void> dispose() async {
-    String myUid = SharedPrefs.getUid();
-    Firestore.getOutRoom(widget.documentId, myUid);
+    Firestore.getOutRoom(widget.documentId, widget.myUid);
     super.dispose();
   }
 
@@ -99,130 +91,97 @@ class _StudyPageState extends State<StudyPage> {
       ),
       body: Column(
         children: [
-          FutureBuilder(
-            future: getMyUid(),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if(snapshot.connectionState == ConnectionState.done) {
-                return Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-
-                    // アイコン画像
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top:16.0),
-                        child: Container(
-                          padding: EdgeInsets.all(8.0),
-
-                          // ToDo：ここのアイコン画像表示をスマートにしたい
-                          child:  CircleAvatar(
-                            // backgroundColor: Theme.of(context).primaryColor,
-                            radius: MediaQuery.of(context).size.width / 7,
-                            child: CircleAvatar(
-                              backgroundImage: AssetImage(imagesList[userInfo.imageIndex]),
-                              backgroundColor: colorsList[userInfo.color],
-                              radius: MediaQuery.of(context).size.width / 7,
-                            ),
-                          ),
+          SizedBox(height: 20,),
+          // アイコン
+          StreamBuilder<QuerySnapshot>(
+            stream: Firestore.roomRef
+                .doc(widget.documentId)
+                .collection('users')
+                .where('inRoom', isEqualTo: true)
+                .orderBy("inTime")
+                .limit(10)
+                .snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if(!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return Container(
+                height: MediaQuery.of(context).size.height / 7,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: snapshot.data!.docs.map((document) {
+                    Map data = document.data()! as Map;
+                    return AnimatedContainer(
+                      duration: Duration(milliseconds: 1000),
+                      curve: Curves.bounceOut,
+                      child: Container(
+                        alignment: Alignment.topCenter,
+                        child: CircleAvatar(
+                          backgroundImage: AssetImage(imagesList[data['imageIndex']]),
+                          backgroundColor: colorsList[data['color']],
+                          radius: MediaQuery.of(context).size.width / 8.5,
                         ),
-                      ),
-                    ),
-                  ],
+                      )
+                    );
+                  }).toList(),
                 ),
               );
-              } else {
-                return Center(child: CircularProgressIndicator(),);
-              }
             }
           ),
-
-          // 部屋に入っているユーザー表示
-          StreamBuilder(
-            stream: Firestore.roomRef.doc(widget.documentId).collection('users').snapshots(),
-            builder: (context, snapshot) {
-              return FutureBuilder(
-                future: createUsers(),
-                builder: (context, snapshot) {
-                  // if(snapshot.connectionState == ConnectionState.done) {
-                    return Flexible(
-                      child: Column(
-                        children: [
-                          // 部屋の人数
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 30.0),
-                            child: Text(
-                              inRoomUserNum.toString() + '人があなたと一緒に勉強しています。',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            child: GridView.builder(
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3
-                              ),
-                              itemCount: inRoomUserList.length,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    SizedBox(
-                                      height: MediaQuery.of(context).size.width / 4,
-                                      width: MediaQuery.of(context).size.width / 4,
-                                      child: Stack(
-                                        children: <Widget>[
-                                          Container(
-                                            alignment: Alignment.topCenter,
-
-                                            // ToDo：ここのアイコン画像表示をスマートにしたい
-                                            child:  CircleAvatar(
-                                              // backgroundColor: Theme.of(context).primaryColor,
-                                              radius: MediaQuery.of(context).size.width / 8.5,
-                                              child: CircleAvatar(
-                                                backgroundImage: AssetImage(imagesList[inRoomUserList[index].imageIndex]),
-                                                backgroundColor: colorsList[inRoomUserList[index].color],
-                                                radius: MediaQuery.of(context).size.width / 8.5,
-                                              ),
-                                            ),
-                                          ),
-                                        Container(
-                                          alignment: Alignment.bottomRight,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              // いいね処理
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(content: Text('いいねを押しました')),
-                                              );
-                                            },
-                                            child: Container(
-                                              child: Icon(
-                                                  Icons.favorite,
-                                                  color: Colors.pink,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              }
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  // } else {
-                  //   return Center(child: CircularProgressIndicator(),);
-                  // }
-                },
-              );
-            }
+          // タイマー
+          StudyPageTimer(),
+          // チャット
+          Flexible(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: Firestore.roomRef
+                  .doc(widget.documentId)
+                  .collection('messages')
+                  .orderBy("createdAt",descending: true)
+                  .limit(30)
+                  .snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if(!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return Container(
+                  // toDo: スマホ高さの調整がまだできていない
+                  height: MediaQuery.of(context).size.height-300,
+                  child: ListView(
+                    physics: RangeMaintainingScrollPhysics(),
+                    shrinkWrap: true,
+                    // reverse: true,
+                    children: snapshot.data!.docs.map((document) {
+                      Map data = document.data()! as Map;
+                      return _messageItem(data);
+                    }).toList()
+                  ),
+                );
+              }
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _messageItem(data) {
+    return Padding(
+      padding: EdgeInsets.only(top: 5.0, right: 10, left: 10, bottom: 5),
+      child: Container(
+        child: Container(
+          height: 30,
+          decoration: BoxDecoration(
+            color: data['uid'] == widget.myUid ? Colors.green[100]: Colors.white,
+          ),
+          child: Text(
+            data['message'],
+            textAlign: data['uid'] == widget.myUid ? TextAlign.right: TextAlign.left,
+            style: TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.w600
+            ),
+          )
+        ),
       ),
     );
   }

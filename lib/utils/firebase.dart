@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mokumoku_a/model/user.dart';
-import 'package:mokumoku_a/utils/shared_prefs.dart';
 
 class Firestore {
   static FirebaseFirestore _firestoreInstance = FirebaseFirestore.instance;
@@ -11,9 +10,9 @@ class Firestore {
   static Future<UserModel> getProfile(String uid) async {
     final profile = await userRef.doc(uid).get();
     UserModel myProfile = UserModel(
-      color: profile.data()?['color'],
+      color: profile.data()?['color'] ?? 0,
       uid: uid,
-      imageIndex: profile.data()?['imageIndex'],
+      imageIndex: profile.data()?['imageIndex'] ?? 0,
     );
     return myProfile;
   }
@@ -30,25 +29,29 @@ class Firestore {
   // rooms > 部屋のドキュメント > 値・usersのコレクション, 部屋のユーザについての処理
   // 部屋に入るときにroomsのusersにuserを追加
   static Future<void> addUsers(roomId, userDocumentId) async {
-    return roomRef
+    return await getProfile(userDocumentId).then((user) {
+      roomRef
       .doc(roomId)
       .collection('users')
       .doc(userDocumentId)
-      .set({'inTime': Timestamp.now(), 'inRoom': true})
+      .set({'color': user.color, 'imageIndex': user.imageIndex, 'inTime': Timestamp.now(), 'inRoom': true})
       .then((value) => print("User Updated"))
       .catchError((error) => print("Failed to update user: $error"));
+    });
   }
-
 
   // 勉強部屋内
   static Future<List> getUsers(String roomId, String myUid, List inRoomUserList) async {
-    final getRoomUsers = roomRef.doc(roomId).collection('users');
-    final snapshot = await getRoomUsers.where('inRoom', isEqualTo: true).get();
+    final getRoomUsers = roomRef
+              .doc(roomId).collection('users')
+              .where('inRoom', isEqualTo: true)
+              .orderBy("inTime")
+              .limit(10);
+          
+    final snapshot = await getRoomUsers.get();
     List roomUsersList = [];
     await Future.forEach(snapshot.docs, (QueryDocumentSnapshot<Map<String, dynamic>> doc) async {
-      var user = await getRoomUsers.doc(doc.id).get();
-      bool userInRoom = user.data()!['inRoom'];
-      if(doc.id != myUid && userInRoom) {
+      if(doc.id != myUid) {
         UserModel user = await getProfile(doc.id);
         UserModel userProfile = UserModel(
           color: user.color,
@@ -61,10 +64,19 @@ class Firestore {
     return roomUsersList;
   }
 
+  static Future<void> sendFirstMessage(roomDocumentId, userId) async{
+    return await roomRef
+        .doc(roomDocumentId)
+        .collection('messages')
+        .doc()
+        .set({
+          'createdAt': Timestamp.now(),
+          'message': '頑張りましょう',
+          'uid': userId,
+        });
+  }
+
   static Future<void> getOutRoom(roomDocumentId, userDocumentId) {
-    // final getOutTime = Timestamp.now();
-    // final userStudyResult = roomRef.doc(roomDocumentId).collection('users').doc(userDocumentId);
-    // final userProfile = getProfile(userDocumentId);
     return roomRef
         .doc(roomDocumentId)
         .collection('users')
