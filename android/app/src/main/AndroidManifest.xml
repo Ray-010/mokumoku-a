@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mokumoku_a">
-   <application
+    <application
         android:label="mokumoku_a"
         android:icon="@mipmap/ic_launcher">
         <activity
