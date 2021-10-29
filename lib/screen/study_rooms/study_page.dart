@@ -55,6 +55,8 @@ class _StudyPageState extends State<StudyPage> {
   String initialMessage = '';
   String progressMessage = '';
   String lastMessage = '';
+  int color = 0;
+  int imageIndex = 0;
 
   @override
   void initState() {
@@ -62,15 +64,17 @@ class _StudyPageState extends State<StudyPage> {
       initialMessage = messages.initialMessage;
       progressMessage = messages.progressMessage;
       lastMessage = messages.lastMessage;
+      color = messages.color;
+      imageIndex = messages.imageIndex;
     }).then((_) {
-      Firestore.sendMessage(widget.documentId, widget.myUid, initialMessage);
+      Firestore.sendMessage(widget.documentId, widget.myUid, initialMessage, color, imageIndex);
     });
     super.initState();
   }
 
   @override
   Future<void> dispose() async {
-    Firestore.sendMessage(widget.documentId, widget.myUid, lastMessage);
+    Firestore.sendMessage(widget.documentId, widget.myUid, lastMessage, color, imageIndex);
     Firestore.getOutRoom(widget.documentId, widget.myUid);
     super.dispose();
   }
@@ -211,8 +215,8 @@ class _StudyPageState extends State<StudyPage> {
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             alignment: Alignment.topCenter,
             child: CircleAvatar(
-              backgroundImage: AssetImage(imagesList[1]),
-              backgroundColor: colorsList[1],
+              backgroundImage: AssetImage(imagesList[data['imageIndex']]),
+              backgroundColor: colorsList[data['color']],
               radius: 25,
             ),
           ),

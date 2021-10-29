@@ -65,7 +65,7 @@ class Firestore {
     return roomUsersList;
   }
 
-  static Future<void> sendMessage(String roomDocumentId, String userId, String message) async{
+  static Future<void> sendMessage(String roomDocumentId, String userId, String message, int color, int imageIndex) async{
     return await roomRef
         .doc(roomDocumentId)
         .collection('messages')
@@ -74,6 +74,8 @@ class Firestore {
           'createdAt': Timestamp.now(),
           'message': message,
           'uid': userId,
+          'color': color,
+          'imageIndex': imageIndex,
         });
   }
 
@@ -91,7 +93,9 @@ class Firestore {
     MessageModel myMessages = MessageModel(
       initialMessage: profile.data()?['initialMessage'] ?? errorMessage,
       progressMessage: profile.data()?['progressMessage'] ?? errorMessage,
-      lastMessage: profile.data()?['lastMessage'] ?? errorMessage
+      lastMessage: profile.data()?['lastMessage'] ?? errorMessage,
+      color: profile.data()?['color'] ?? errorMessage,
+      imageIndex: profile.data()?['imageIndex'] ?? errorMessage
     );
     return myMessages;
   }
