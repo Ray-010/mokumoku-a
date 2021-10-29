@@ -110,14 +110,19 @@ class _StudyPageState extends State<StudyPage> {
 
           // アイコン
           Container(
-            height: 100,
+            height: 110,
 
             child: Column(
               children: [
                 Container(
                   alignment: Alignment.bottomLeft,
                   padding: EdgeInsets.only(left: 5),
-                  child: Text('ランキング'),
+                  child: Text(
+                    'ランキング',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
 
 
@@ -135,6 +140,13 @@ class _StudyPageState extends State<StudyPage> {
                     }
                     return Container(
                       height: 80,
+                      padding: EdgeInsets.only(bottom: 5.0),
+                      decoration: BoxDecoration(
+                          border: Border(bottom: BorderSide(
+                            color: Colors.grey,
+                            width: 1.0, // Underline thickness
+                          )),
+                      ),
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: snapshot.data!.docs.map((document) {
@@ -160,13 +172,18 @@ class _StudyPageState extends State<StudyPage> {
               ],
             ),
           ),
+
           // タイマー
-          Container(
-            padding: EdgeInsets.all(20),
-            child: StudyPageTimer(),
-          ),
+          StudyPageTimer(),
 
           // チャット
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+                '『' + widget.title + '』部屋タイムライン'
+            ),
+          ),
+
           Flexible(
             child: StreamBuilder<QuerySnapshot>(
               stream: Firestore.roomRef
@@ -180,17 +197,16 @@ class _StudyPageState extends State<StudyPage> {
                   return Center(child: CircularProgressIndicator());
                 }
                 return Container(
-                  // toDo: スマホ高さの調整がまだできていない
-                  height: MediaQuery.of(context).size.height-300,
-                  color: Colors.lightBlueAccent[100],
+                  // color: Colors.lightBlue[100],
                   child: ListView(
                     physics: RangeMaintainingScrollPhysics(),
                     shrinkWrap: true,
-                    // TODO: 最初の頃のメッセージ位置の調整
-                    reverse: true,
+                    //
+                    // // TODO: 最初の頃のメッセージ位置の調整
+                    // reverse: true,
                     children: snapshot.data!.docs.map((document) {
                       Map data = document.data()! as Map;
-                      return _messagePractice(data);
+                      return _timeLineItem(data);
                     }).toList()
                   ),
                 );
@@ -216,7 +232,7 @@ class _StudyPageState extends State<StudyPage> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             alignment: Alignment.topCenter,
-            child: CircleAvatar(
+            child: data['uid'] == widget.myUid ? null : CircleAvatar(
               backgroundImage: AssetImage(imagesList[data['imageIndex']]),
               backgroundColor: colorsList[data['color']],
               radius: 25,
@@ -258,24 +274,57 @@ class _StudyPageState extends State<StudyPage> {
     );
   }
 
-  Widget _messageItem(data) {
-    return Padding(
-      padding: EdgeInsets.only(top: 5.0, right: 10, left: 10, bottom: 5),
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
-        decoration: BoxDecoration(
-          color: data['uid'] == widget.myUid ? Colors.lightBlue: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+  Widget _timeLineItem(data) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10.0),
+
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey,
         ),
-        child: Text(
-          data['message'],
-          textAlign: data['uid'] == widget.myUid ? TextAlign.right: TextAlign.left,
-          style: TextStyle(
-            fontSize: 18.0,
-            color: data['uid'] == widget.myUid ? Colors.white : Colors.black,
-            // fontWeight: FontWeight.w600
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // アイコン
+          Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                alignment: Alignment.topCenter,
+                child: CircleAvatar(
+                  backgroundImage: AssetImage(imagesList[data['imageIndex']]),
+                  backgroundColor: colorsList[data['color']],
+                  radius: 25,
+                ),
+              ),
+
+              // 時間
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text(
+                  intl.DateFormat('HH:mm').format(data['createdAt'].toDate().add(Duration(hours: 9))),
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
           ),
-        )
+
+          // メッセージ
+          Container(
+            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 80),
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+
+            child: Text(
+              data['message'],
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

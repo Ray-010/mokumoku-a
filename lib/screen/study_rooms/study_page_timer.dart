@@ -10,27 +10,73 @@ class StudyPageTimer extends StatelessWidget {
       create: (_) => TimerProvider(),
       child: Consumer<TimerProvider>(
         builder: (context, model, child) {
-          return GestureDetector(
-            onTap: () {
-              model.started ? model.startTimer() : model.stopTimer();
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              decoration: BoxDecoration(
-                color:  model.started ? Colors.red[100] : Colors.white,
-                borderRadius: BorderRadius.circular(15.0),
-                border: model.started ? Border.all(color: Colors.red, width: 5.0) : Border.all(color: Colors.green, width: 5.0),
-              ),
-              child: Text(
-                model.timeToDisplay,
-                style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.w600,
-                  color: model.started ? Colors.black : Colors.green,
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.35,
+
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          color: Colors.grey,
+                          width: 5.0, // Underline thickness
+                        ))
+                    ),
+                    child: Text(
+                      model.timeToDisplay,
+                      style: TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 3.0,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+
+                ElevatedButton(
+                  onPressed: (){
+                    model.started ? model.startTimer() : model.stopTimer();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: model.started ? Colors.green : Colors.red,
+                    minimumSize: Size(100, 40),
+                  ),
+                  child: Text(
+                    model.started ? 'START' : 'STOP',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
+
+          //   GestureDetector(
+          //   onTap: () {
+          //     model.started ? model.startTimer() : model.stopTimer();
+          //   },
+          //   child: Container(
+          //     padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          //     decoration: BoxDecoration(
+          //       color:  model.started ? Colors.red[100] : Colors.white,
+          //       borderRadius: BorderRadius.circular(15.0),
+          //       border: model.started ? Border.all(color: Colors.red, width: 5.0) : Border.all(color: Colors.green, width: 5.0),
+          //     ),
+          //     child: Text(
+          //       model.timeToDisplay,
+          //       style: TextStyle(
+          //         fontSize: 30.0,
+          //         fontWeight: FontWeight.w600,
+          //         color: model.started ? Colors.black : Colors.green,
+          //       ),
+          //     ),
+          //   ),
+          // );
         }
       ),
     );
