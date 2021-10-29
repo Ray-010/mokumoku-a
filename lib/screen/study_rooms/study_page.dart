@@ -186,6 +186,7 @@ class _StudyPageState extends State<StudyPage> {
                   child: ListView(
                     physics: RangeMaintainingScrollPhysics(),
                     shrinkWrap: true,
+                    // TODO: 最初の頃のメッセージ位置の調整
                     reverse: true,
                     children: snapshot.data!.docs.map((document) {
                       Map data = document.data()! as Map;
@@ -203,7 +204,7 @@ class _StudyPageState extends State<StudyPage> {
 
   Widget _messagePractice(data) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
 
@@ -211,6 +212,7 @@ class _StudyPageState extends State<StudyPage> {
         textDirection: data['uid'] == widget.myUid ? TextDirection.rtl : TextDirection.ltr,
 
         children: [
+          // アイコン
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             alignment: Alignment.topCenter,
@@ -221,6 +223,7 @@ class _StudyPageState extends State<StudyPage> {
             ),
           ),
 
+          // メッセージ
           Container(
             constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
 
@@ -240,10 +243,14 @@ class _StudyPageState extends State<StudyPage> {
             ),
           ),
 
-          Text(
-            intl.DateFormat('HH:mm').format(data['createdAt'].toDate().add(Duration(hours: 9))),
-            style: TextStyle(
-              fontSize: 12,
+          // 時間
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 3.0),
+            child: Text(
+              intl.DateFormat('HH:mm').format(data['createdAt'].toDate().add(Duration(hours: 9))),
+              style: TextStyle(
+                fontSize: 12,
+              ),
             ),
           ),
         ],
