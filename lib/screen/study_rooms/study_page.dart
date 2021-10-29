@@ -8,11 +8,10 @@ import 'package:intl/intl.dart' as intl;
 class StudyPage extends StatefulWidget {
   final String title;
   final DateTime finishedTime;
-  final String members;
   final String documentId;
   final String myUid;
 
-  StudyPage(this.title, this.finishedTime, this.members, this.documentId, this.myUid);
+  StudyPage(this.title, this.finishedTime, this.documentId, this.myUid);
 
   @override
   _StudyPageState createState() => _StudyPageState();

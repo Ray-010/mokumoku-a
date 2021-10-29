@@ -30,6 +30,8 @@ class Firestore {
   // rooms > 部屋のドキュメント > 値・usersのコレクション, 部屋のユーザについての処理
   // 部屋に入るときにroomsのusersにuserを追加
   static Future<void> addUsers(roomId, userDocumentId) async {
+    updateMembers(roomId, 1);
+
     return await getProfile(userDocumentId).then((user) {
       roomRef
       .doc(roomId)
@@ -80,6 +82,8 @@ class Firestore {
   }
 
   static Future<void> getOutRoom(roomDocumentId, userDocumentId) {
+    updateMembers(roomDocumentId, -1);
+
     return roomRef
         .doc(roomDocumentId)
         .collection('users')
@@ -108,5 +112,15 @@ class Firestore {
           'progressMessage': progressMessage,
           'lastMessage': lastMessage,
         });
+  }
+
+  static Future<void> updateMembers(roomId, addNum) async {
+    final roomInfo = await roomRef.doc(roomId).get();
+
+    int members = roomInfo['members'] + addNum;
+
+    return await roomRef
+      .doc(roomId)
+      .update({'members': members});
   }
 }

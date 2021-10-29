@@ -25,8 +25,8 @@ class _AddStudyRoomPageState extends State<AddStudyRoomPage> {
     return rooms
         .add({
       'title': titleController.text,
-      'members': '0',
-      'studyTime': timeController.text,
+      'members': 0,
+      'studyTime': int.parse(timeController.text),
       'createdTime': Timestamp.now(),
       'finishedTime': DateTime.now().add(Duration(hours: hour, minutes: min)),
       'roomIn': true,
