@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mokumoku_a/screen/study_rooms/study_page_timer.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
+import 'package:intl/intl.dart' as intl;
 
 // 勉強部屋に入った後の画面 実際の勉強部屋
 class StudyPage extends StatefulWidget {
@@ -102,45 +103,65 @@ class _StudyPageState extends State<StudyPage> {
       ),
       body: Column(
         children: [
-          SizedBox(height: 20,),
+
           // アイコン
-          StreamBuilder<QuerySnapshot>(
-            stream: Firestore.roomRef
-                .doc(widget.documentId)
-                .collection('users')
-                .where('inRoom', isEqualTo: true)
-                .orderBy("inTime")
-                .limit(10)
-                .snapshots(),
-            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if(!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
-              }
-              return Container(
-                height: MediaQuery.of(context).size.height / 7,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: snapshot.data!.docs.map((document) {
-                    Map data = document.data()! as Map;
-                    return AnimatedContainer(
-                      duration: Duration(milliseconds: 1000),
-                      curve: Curves.bounceOut,
-                      child: Container(
-                        alignment: Alignment.topCenter,
-                        child: CircleAvatar(
-                          backgroundImage: AssetImage(imagesList[data['imageIndex']]),
-                          backgroundColor: colorsList[data['color']],
-                          radius: MediaQuery.of(context).size.width / 8.5,
-                        ),
-                      )
-                    );
-                  }).toList(),
+          Container(
+            height: 100,
+
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.bottomLeft,
+                  padding: EdgeInsets.only(left: 5),
+                  child: Text('ランキング'),
                 ),
-              );
-            }
+
+
+                StreamBuilder<QuerySnapshot>(
+                  stream: Firestore.roomRef
+                      .doc(widget.documentId)
+                      .collection('users')
+                      .where('inRoom', isEqualTo: true)
+                      .orderBy("inTime")
+                      .limit(10)
+                      .snapshots(),
+                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if(!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    return Container(
+                      height: 80,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: snapshot.data!.docs.map((document) {
+                          Map data = document.data()! as Map;
+                          return AnimatedContainer(
+                            duration: Duration(milliseconds: 1000),
+                            curve: Curves.bounceOut,
+                            child: Container(
+                              padding: EdgeInsets.only(left: 3.0, top: 5),
+                              alignment: Alignment.topCenter,
+                              child: CircleAvatar(
+                                backgroundImage: AssetImage(imagesList[data['imageIndex']]),
+                                backgroundColor: colorsList[data['color']],
+                                radius: 40,
+                              ),
+                            )
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                ),
+              ],
+            ),
           ),
           // タイマー
-          StudyPageTimer(),
+          Container(
+            padding: EdgeInsets.all(20),
+            child: StudyPageTimer(),
+          ),
+
           // チャット
           Flexible(
             child: StreamBuilder<QuerySnapshot>(
@@ -157,13 +178,14 @@ class _StudyPageState extends State<StudyPage> {
                 return Container(
                   // toDo: スマホ高さの調整がまだできていない
                   height: MediaQuery.of(context).size.height-300,
+                  color: Colors.lightBlueAccent[100],
                   child: ListView(
                     physics: RangeMaintainingScrollPhysics(),
                     shrinkWrap: true,
-                    // reverse: true,
+                    reverse: true,
                     children: snapshot.data!.docs.map((document) {
                       Map data = document.data()! as Map;
-                      return _messageItem(data);
+                      return _messagePractice(data);
                     }).toList()
                   ),
                 );
@@ -175,19 +197,72 @@ class _StudyPageState extends State<StudyPage> {
     );
   }
 
+  Widget _messagePractice(data) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+
+        // 自分が送ったものは右寄せ
+        textDirection: data['uid'] == widget.myUid ? TextDirection.rtl : TextDirection.ltr,
+
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            alignment: Alignment.topCenter,
+            child: CircleAvatar(
+              backgroundImage: AssetImage(imagesList[1]),
+              backgroundColor: colorsList[1],
+              radius: 25,
+            ),
+          ),
+
+          Container(
+            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
+
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+
+            decoration: BoxDecoration(
+              color: data['uid'] == widget.myUid ? Colors.lightBlue: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+
+            child: Text(
+              data['message'],
+              style: TextStyle(
+                fontSize: 20,
+                color: data['uid'] == widget.myUid ? Colors.white : Colors.black,
+              ),
+            ),
+          ),
+
+          Text(
+            intl.DateFormat('HH:mm').format(data['createdAt'].toDate().add(Duration(hours: 9))),
+            style: TextStyle(
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _messageItem(data) {
     return Padding(
       padding: EdgeInsets.only(top: 5.0, right: 10, left: 10, bottom: 5),
       child: Container(
+        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
         decoration: BoxDecoration(
-          color: data['uid'] == widget.myUid ? Colors.green[100]: Colors.white,
+          color: data['uid'] == widget.myUid ? Colors.lightBlue: Colors.white,
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           data['message'],
           textAlign: data['uid'] == widget.myUid ? TextAlign.right: TextAlign.left,
           style: TextStyle(
             fontSize: 18.0,
-            fontWeight: FontWeight.w600
+            color: data['uid'] == widget.myUid ? Colors.white : Colors.black,
+            // fontWeight: FontWeight.w600
           ),
         )
       ),
