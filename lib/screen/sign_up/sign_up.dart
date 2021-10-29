@@ -51,16 +51,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
-
               Container(
-                height: MediaQuery.of(context).size.height / 2,
+                height: MediaQuery.of(context).size.height / 1.8,
                 width: MediaQuery.of(context).size.width,
-                color: Colors.lightBlueAccent,
-                child: Text('MokuMokuイメージ画像'),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.lightBlueAccent.withOpacity(0.7),
+                  image: DecorationImage(
+                    image: AssetImage('images/MokuMoku_logo_01.png'),
+                    fit: BoxFit.cover,
+                    
+                  )
+                ),
+                child: Text(
+                  'MokuMoku',
+                  style: TextStyle(
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 6.0,
+                  ),
+                ),
               ),
 
-              Text(
-                'MokuMokuについての簡単な紹介文',
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 15.0),
+                alignment: Alignment.center,
+                child: Text(
+                  'あなたも一緒に',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 8.0,
+                  ),
+                ),
               ),
 
               // カラー選択

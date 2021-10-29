@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mokumoku_a/model/message.dart';
 import 'package:mokumoku_a/model/user.dart';
 
 class Firestore {
@@ -64,14 +65,14 @@ class Firestore {
     return roomUsersList;
   }
 
-  static Future<void> sendFirstMessage(roomDocumentId, userId) async{
+  static Future<void> sendMessage(String roomDocumentId, String userId, String message) async{
     return await roomRef
         .doc(roomDocumentId)
         .collection('messages')
         .doc()
         .set({
           'createdAt': Timestamp.now(),
-          'message': '頑張りましょう',
+          'message': message,
           'uid': userId,
         });
   }
@@ -82,5 +83,26 @@ class Firestore {
         .collection('users')
         .doc(userDocumentId)
         .update({'inRoom': false});
+  }
+
+  static Future<MessageModel> getUsersMessages(uid) async {
+    final profile = await userRef.doc(uid).get();
+    final String errorMessage = '取得に失敗しました';
+    MessageModel myMessages = MessageModel(
+      initialMessage: profile.data()?['initialMessage'] ?? errorMessage,
+      progressMessage: profile.data()?['progressMessage'] ?? errorMessage,
+      lastMessage: profile.data()?['lastMessage'] ?? errorMessage
+    );
+    return myMessages;
+  }
+
+  static Future<void> updateMessages(uid, initialMessage, progressMessage, lastMessage) async {
+    return await userRef
+        .doc(uid)
+        .update({
+          'initialMessage': initialMessage,
+          'progressMessage': progressMessage,
+          'lastMessage': lastMessage,
+        });
   }
 }

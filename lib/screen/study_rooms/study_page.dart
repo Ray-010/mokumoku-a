@@ -51,14 +51,25 @@ class _StudyPageState extends State<StudyPage> {
     'images/MokuMoku_alpha_icon_06.PNG',
   ];
 
+  String initialMessage = '';
+  String progressMessage = '';
+  String lastMessage = '';
+
   @override
   void initState() {
-    Firestore.sendFirstMessage(widget.documentId, widget.myUid);
+    Firestore.getUsersMessages(widget.myUid).then((messages) {
+      initialMessage = messages.initialMessage;
+      progressMessage = messages.progressMessage;
+      lastMessage = messages.lastMessage;
+    }).then((_) {
+      Firestore.sendMessage(widget.documentId, widget.myUid, initialMessage);
+    });
     super.initState();
   }
 
   @override
   Future<void> dispose() async {
+    Firestore.sendMessage(widget.documentId, widget.myUid, lastMessage);
     Firestore.getOutRoom(widget.documentId, widget.myUid);
     super.dispose();
   }
@@ -168,20 +179,17 @@ class _StudyPageState extends State<StudyPage> {
     return Padding(
       padding: EdgeInsets.only(top: 5.0, right: 10, left: 10, bottom: 5),
       child: Container(
-        child: Container(
-          height: 30,
-          decoration: BoxDecoration(
-            color: data['uid'] == widget.myUid ? Colors.green[100]: Colors.white,
-          ),
-          child: Text(
-            data['message'],
-            textAlign: data['uid'] == widget.myUid ? TextAlign.right: TextAlign.left,
-            style: TextStyle(
-              fontSize: 22.0,
-              fontWeight: FontWeight.w600
-            ),
-          )
+        decoration: BoxDecoration(
+          color: data['uid'] == widget.myUid ? Colors.green[100]: Colors.white,
         ),
+        child: Text(
+          data['message'],
+          textAlign: data['uid'] == widget.myUid ? TextAlign.right: TextAlign.left,
+          style: TextStyle(
+            fontSize: 18.0,
+            fontWeight: FontWeight.w600
+          ),
+        )
       ),
     );
   }

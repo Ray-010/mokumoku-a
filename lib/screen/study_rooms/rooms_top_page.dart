@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mokumoku_a/menu/questionnaire/question_first.dart';
+import 'package:mokumoku_a/menu/setting.dart';
 import 'package:mokumoku_a/screen/study_rooms/add_study_room.dart';
 import 'package:mokumoku_a/screen/study_rooms/study_page.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
@@ -145,15 +146,29 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                       ),
                     ),
                     onTap: (){
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuestionFirstPage(),
-                        ),
-                      );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => QuestionFirstPage(),
+                      //   ),
+                      // );
                     },
                   ),
 
+                  ListTile(
+                    leading: Icon(Icons.settings),
+                    title: Text(
+                      '設定',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => SettingPage(widget.uid),
+                      ));
+                    },
+                  ),
                   ListTile(
                     leading: Icon(Icons.share),
                     title: Text(
