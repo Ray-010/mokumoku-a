@@ -146,12 +146,14 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                       ),
                     ),
                     onTap: (){
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => QuestionFirstPage(),
-                      //   ),
-                      // );
+                      // 一旦戻れるように変更
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QuestionFirstPage(),
+                        ),
+                      );
                     },
                   ),
 
