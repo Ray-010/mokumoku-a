@@ -30,6 +30,8 @@ class Firestore {
   // rooms > 部屋のドキュメント > 値・usersのコレクション, 部屋のユーザについての処理
   // 部屋に入るときにroomsのusersにuserを追加
   static Future<void> addUsers(roomId, userDocumentId) async {
+    updateMembers(roomId, 1);
+
     return await getProfile(userDocumentId).then((user) {
       roomRef
       .doc(roomId)
@@ -65,7 +67,7 @@ class Firestore {
     return roomUsersList;
   }
 
-  static Future<void> sendMessage(String roomDocumentId, String userId, String message) async{
+  static Future<void> sendMessage(String roomDocumentId, String userId, String message, int color, int imageIndex) async{
     return await roomRef
         .doc(roomDocumentId)
         .collection('messages')
@@ -74,10 +76,14 @@ class Firestore {
           'createdAt': Timestamp.now(),
           'message': message,
           'uid': userId,
+          'color': color,
+          'imageIndex': imageIndex,
         });
   }
 
   static Future<void> getOutRoom(roomDocumentId, userDocumentId) {
+    updateMembers(roomDocumentId, -1);
+
     return roomRef
         .doc(roomDocumentId)
         .collection('users')
@@ -91,7 +97,9 @@ class Firestore {
     MessageModel myMessages = MessageModel(
       initialMessage: profile.data()?['initialMessage'] ?? errorMessage,
       progressMessage: profile.data()?['progressMessage'] ?? errorMessage,
-      lastMessage: profile.data()?['lastMessage'] ?? errorMessage
+      lastMessage: profile.data()?['lastMessage'] ?? errorMessage,
+      color: profile.data()?['color'] ?? errorMessage,
+      imageIndex: profile.data()?['imageIndex'] ?? errorMessage
     );
     return myMessages;
   }
@@ -104,5 +112,15 @@ class Firestore {
           'progressMessage': progressMessage,
           'lastMessage': lastMessage,
         });
+  }
+
+  static Future<void> updateMembers(roomId, addNum) async {
+    final roomInfo = await roomRef.doc(roomId).get();
+
+    int members = roomInfo['members'] + addNum;
+
+    return await roomRef
+      .doc(roomId)
+      .update({'members': members});
   }
 }

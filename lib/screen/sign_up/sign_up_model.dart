@@ -3,13 +3,14 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mokumoku_a/utils/shared_prefs.dart';
 
-class SignUpColorModel {
+class SignUpModel {
 
   static int imageIndex = Random().nextInt(6);
   static List<String> initialMessage = [
     '今から勉強開始します！',
     '時は満ちた... 勉強を始めるぜ...!',
     'おいおい皆頑張っちゃって、俺も混ぜてくれない?',
+    'いくぞぉぉぉ！！！',
   ];
   static List<String> progressMessage = [
     '勉強の手が止まらねえぇ...!',
@@ -18,10 +19,12 @@ class SignUpColorModel {
     'もくもく',
     'にゃーん',
   ];
+
   static List<String> lastMessage = [
     '終わります！皆さんも頑張ってください!',
     '皆さん休憩は挟むんですよ。私はお先に上がらせていただきます。',
-    '目標達成！...さらば！'
+    '目標達成！...さらば！',
+    'おつ～',
   ];
 
   static Future signUp(colorIndex) async {

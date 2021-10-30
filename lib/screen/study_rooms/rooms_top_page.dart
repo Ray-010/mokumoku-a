@@ -146,12 +146,14 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                       ),
                     ),
                     onTap: (){
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => QuestionFirstPage(),
-                      //   ),
-                      // );
+                      // 一旦戻れるように変更
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QuestionFirstPage(),
+                        ),
+                      );
                     },
                   ),
 
@@ -251,7 +253,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                               width: MediaQuery.of(context).size.width / 5,
                               height: 50,
                               child: Text(
-                                data['members'] + '名',
+                                '${data['members']}名',
                                 style: TextStyle(
                                   fontSize: 16,
                                 ),
@@ -263,7 +265,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                                 // 部屋に入る人をrooms>usersにセットする
                                 Firestore.addUsers(document.id, widget.uid).then((_) {
                                   Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => StudyPage(data['title'], data['finishedTime'].toDate(), data['members'], document.id, widget.uid),
+                                    builder: (context) => StudyPage(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
                                   ));
                                 });
                               }
@@ -334,7 +336,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                             ),
                             width: MediaQuery.of(context).size.width / 4,
                             child: Text(
-                              data['members'] + '名',
+                              '${data['members']}名',
                               style: TextStyle(
                                 fontSize: 16,
                               ),
@@ -407,7 +409,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                                                         await Firestore.addUsers(document.id, widget.uid);
                                                         Navigator.pop(context);
                                                         Navigator.push(context, MaterialPageRoute(
-                                                          builder: (context) => StudyPage(data['title'], data['finishedTime'].toDate(), data['members'], document.id, widget.uid,),
+                                                          builder: (context) => StudyPage(data['title'], data['finishedTime'].toDate(), document.id, widget.uid,),
                                                         ));
                                                       }
                                                     }
