@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mokumoku_a/screen/study_rooms/timer_model.dart';
 import 'package:provider/provider.dart';
 
+// 勉強部屋内のタイマー表示画面
 class StudyPageTimer extends StatelessWidget {
 
   @override
@@ -16,12 +17,14 @@ class StudyPageTimer extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+
+                // タイマーテキスト
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                   child: Container(
                     decoration: BoxDecoration(
                         border: Border(bottom: BorderSide(
-                          color: Colors.grey,
+                          color: model.started ? Colors.grey : Colors.lightBlueAccent,
                           width: 5.0, // Underline thickness
                         ))
                     ),
@@ -36,24 +39,6 @@ class StudyPageTimer extends StatelessWidget {
                   ),
                 ),
 
-                // テキスト形式ボタン
-                // ElevatedButton(
-                //   onPressed: (){
-                //     model.started ? model.startTimer() : model.stopTimer();
-                //   },
-                //   style: ElevatedButton.styleFrom(
-                //     primary: model.started ? Colors.green : Colors.red,
-                //     minimumSize: Size(100, 40),
-                //   ),
-                //   child: Text(
-                //     model.started ? 'START' : 'STOP',
-                //     style: TextStyle(
-                //       fontWeight: FontWeight.bold,
-                //       fontSize: 20,
-                //     ),
-                //   ),
-                // ),
-
                 // アイコンボタン形式
                 IconButton(
                   onPressed: (){
@@ -66,28 +51,6 @@ class StudyPageTimer extends StatelessWidget {
               ],
             ),
           );
-
-          //   GestureDetector(
-          //   onTap: () {
-          //     model.started ? model.startTimer() : model.stopTimer();
-          //   },
-          //   child: Container(
-          //     padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-          //     decoration: BoxDecoration(
-          //       color:  model.started ? Colors.red[100] : Colors.white,
-          //       borderRadius: BorderRadius.circular(15.0),
-          //       border: model.started ? Border.all(color: Colors.red, width: 5.0) : Border.all(color: Colors.green, width: 5.0),
-          //     ),
-          //     child: Text(
-          //       model.timeToDisplay,
-          //       style: TextStyle(
-          //         fontSize: 30.0,
-          //         fontWeight: FontWeight.w600,
-          //         color: model.started ? Colors.black : Colors.green,
-          //       ),
-          //     ),
-          //   ),
-          // );
         }
       ),
     );

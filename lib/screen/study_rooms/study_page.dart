@@ -108,10 +108,9 @@ class _StudyPageState extends State<StudyPage> {
       body: Column(
         children: [
 
-          // アイコン
+          // 滞在時間が長いランキング上位10名表示
           Container(
             height: 120,
-
             child: Column(
               children: [
                 Container(
@@ -127,7 +126,7 @@ class _StudyPageState extends State<StudyPage> {
                   ),
                 ),
 
-
+                // アイコン表示
                 StreamBuilder<QuerySnapshot>(
                   stream: Firestore.roomRef
                       .doc(widget.documentId)
@@ -146,7 +145,7 @@ class _StudyPageState extends State<StudyPage> {
                       decoration: BoxDecoration(
                           border: Border(bottom: BorderSide(
                             color: Colors.grey,
-                            width: 3.0, // Underline thickness
+                            width: 2.0, // Underline thickness
                           )),
                       ),
                       child: ListView(
@@ -178,7 +177,7 @@ class _StudyPageState extends State<StudyPage> {
           // タイマー
           StudyPageTimer(),
 
-          // チャットかタイムライン
+          // タイムライン
           Container(
             padding: EdgeInsets.all(8.0),
             child: Text(
@@ -212,11 +211,6 @@ class _StudyPageState extends State<StudyPage> {
                     )),
                   ),
                   child: ListView(
-                    physics: RangeMaintainingScrollPhysics(),
-                    shrinkWrap: true,
-                    //
-                    // // TODO: 最初の頃のメッセージ位置の調整
-                    // reverse: true,
                     children: snapshot.data!.docs.map((document) {
                       Map data = document.data()! as Map;
                       return _timeLineItem(data);
@@ -224,63 +218,6 @@ class _StudyPageState extends State<StudyPage> {
                   ),
                 );
               }
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // チャット形式
-  Widget _messagePractice(data) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-
-        // 自分が送ったものは右寄せ
-        textDirection: data['uid'] == widget.myUid ? TextDirection.rtl : TextDirection.ltr,
-
-        children: [
-          // アイコン
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            alignment: Alignment.topCenter,
-            child: data['uid'] == widget.myUid ? null : CircleAvatar(
-              backgroundImage: AssetImage(imagesList[data['imageIndex']]),
-              backgroundColor: colorsList[data['color']],
-              radius: 25,
-            ),
-          ),
-
-          // メッセージ
-          Container(
-            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
-
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-
-            decoration: BoxDecoration(
-              color: data['uid'] == widget.myUid ? Colors.lightBlue: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-
-            child: Text(
-              data['message'],
-              style: TextStyle(
-                fontSize: 20,
-                color: data['uid'] == widget.myUid ? Colors.white : Colors.black,
-              ),
-            ),
-          ),
-
-          // 時間
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 3.0),
-            child: Text(
-              intl.DateFormat('HH:mm').format(data['createdAt'].toDate().add(Duration(hours: 9))),
-              style: TextStyle(
-                fontSize: 12,
-              ),
             ),
           ),
         ],

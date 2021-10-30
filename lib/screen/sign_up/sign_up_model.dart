@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mokumoku_a/utils/shared_prefs.dart';
 
-class SignUpColorModel {
+class SignUpModel {
 
   static int imageIndex = Random().nextInt(6);
   static List<String> initialMessage = [
