@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mokumoku_a/screen/study_rooms/study_page_timer.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
@@ -88,7 +89,7 @@ class _StudyPageState extends State<StudyPage> {
                 TextSpan(
                   text: '『' + widget.title + '』',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
@@ -96,7 +97,7 @@ class _StudyPageState extends State<StudyPage> {
                 TextSpan(
                   text: '部屋',
                   style: TextStyle(
-                    color: Colors.black87,
+                    color: Colors.white,
                     fontSize: 20,
                   ),
                 ),
@@ -109,16 +110,18 @@ class _StudyPageState extends State<StudyPage> {
 
           // アイコン
           Container(
-            height: 110,
+            height: 120,
 
             child: Column(
               children: [
                 Container(
                   alignment: Alignment.bottomLeft,
-                  padding: EdgeInsets.only(left: 5),
+                  padding: EdgeInsets.only(left: 8),
                   child: Text(
                     'ランキング',
                     style: TextStyle(
+                      letterSpacing: 2.0,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -138,12 +141,12 @@ class _StudyPageState extends State<StudyPage> {
                       return Center(child: CircularProgressIndicator());
                     }
                     return Container(
-                      height: 80,
-                      padding: EdgeInsets.only(bottom: 5.0),
+                      height: 90,
+                      padding: EdgeInsets.only(bottom: 10.0),
                       decoration: BoxDecoration(
                           border: Border(bottom: BorderSide(
                             color: Colors.grey,
-                            width: 1.0, // Underline thickness
+                            width: 3.0, // Underline thickness
                           )),
                       ),
                       child: ListView(
@@ -175,11 +178,16 @@ class _StudyPageState extends State<StudyPage> {
           // タイマー
           StudyPageTimer(),
 
-          // チャット
+          // チャットかタイムライン
           Container(
             padding: EdgeInsets.all(8.0),
             child: Text(
-                '『' + widget.title + '』部屋タイムライン'
+              'タイムライン',
+              style: TextStyle(
+                letterSpacing: 2.0,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
 
@@ -197,6 +205,12 @@ class _StudyPageState extends State<StudyPage> {
                 }
                 return Container(
                   // color: Colors.lightBlue[100],
+                  decoration: BoxDecoration(
+                    border: Border(top: BorderSide(
+                      color: Colors.grey,
+                      width: 3.0, // Underline thickness
+                    )),
+                  ),
                   child: ListView(
                     physics: RangeMaintainingScrollPhysics(),
                     shrinkWrap: true,
@@ -217,6 +231,7 @@ class _StudyPageState extends State<StudyPage> {
     );
   }
 
+  // チャット形式
   Widget _messagePractice(data) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -273,53 +288,58 @@ class _StudyPageState extends State<StudyPage> {
     );
   }
 
+  // タイムライン形式
   Widget _timeLineItem(data) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0),
 
       decoration: BoxDecoration(
-        border: Border.all(
+        color: data['uid'] == widget.myUid ? Colors.lightBlue[50] : Colors.white,
+        border: Border(bottom: BorderSide(
           color: Colors.grey,
-        ),
+          width: 1.0, // Underline thickness
+        )),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // アイコン
-          Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                alignment: Alignment.topCenter,
-                child: CircleAvatar(
-                  backgroundImage: AssetImage(imagesList[data['imageIndex']]),
-                  backgroundColor: colorsList[data['color']],
-                  radius: 25,
-                ),
-              ),
-
-              // 時間
-              Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Text(
-                  intl.DateFormat('HH:mm').format(data['createdAt'].toDate().add(Duration(hours: 9))),
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ],
+          Container(
+            // color: Colors.green,
+            width: 70,
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            alignment: Alignment.topCenter,
+            child: CircleAvatar(
+              backgroundImage: AssetImage(imagesList[data['imageIndex']]),
+              backgroundColor: colorsList[data['color']],
+              radius: 25,
+            ),
           ),
 
           // メッセージ
           Container(
-            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 80),
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+            // color: Colors.orangeAccent,
+            width: MediaQuery.of(context).size.width - 120,
+            padding: EdgeInsets.only(left: 3.0),
 
             child: Text(
               data['message'],
               style: TextStyle(
                 fontSize: 20,
+              ),
+            ),
+          ),
+
+          // 時間
+          Container(
+            // color: Colors.redAccent,
+            width: 50,
+            alignment: Alignment.center,
+            padding: const EdgeInsets.only(top: 5),
+            child: Text(
+              intl.DateFormat('HH:mm').format(data['createdAt'].toDate().add(Duration(hours: 9))),
+              style: TextStyle(
+                fontSize: 12,
               ),
             ),
           ),

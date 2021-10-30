@@ -11,7 +11,7 @@ class StudyPageTimer extends StatelessWidget {
       child: Consumer<TimerProvider>(
         builder: (context, model, child) {
           return Container(
-            height: MediaQuery.of(context).size.height * 0.35,
+            height: MediaQuery.of(context).size.height * 0.3,
 
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -36,21 +36,32 @@ class StudyPageTimer extends StatelessWidget {
                   ),
                 ),
 
-                ElevatedButton(
+                // テキスト形式ボタン
+                // ElevatedButton(
+                //   onPressed: (){
+                //     model.started ? model.startTimer() : model.stopTimer();
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //     primary: model.started ? Colors.green : Colors.red,
+                //     minimumSize: Size(100, 40),
+                //   ),
+                //   child: Text(
+                //     model.started ? 'START' : 'STOP',
+                //     style: TextStyle(
+                //       fontWeight: FontWeight.bold,
+                //       fontSize: 20,
+                //     ),
+                //   ),
+                // ),
+
+                // アイコンボタン形式
+                IconButton(
                   onPressed: (){
                     model.started ? model.startTimer() : model.stopTimer();
                   },
-                  style: ElevatedButton.styleFrom(
-                    primary: model.started ? Colors.green : Colors.red,
-                    minimumSize: Size(100, 40),
-                  ),
-                  child: Text(
-                    model.started ? 'START' : 'STOP',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
+                  iconSize: 50,
+                  color: model.started ? Colors.green : Colors.red,
+                  icon: Icon(model.started ? Icons.play_circle_fill : Icons.pause_circle_filled),
                 ),
               ],
             ),
