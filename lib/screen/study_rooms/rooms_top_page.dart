@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mokumoku_a/menu/drawer.dart';
 import 'package:mokumoku_a/screen/study_rooms/add_study_room.dart';
 import 'package:mokumoku_a/screen/study_rooms/study_page.dart';
+import 'package:mokumoku_a/screen/study_rooms/study_room_ui/study_room_01.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
 
 class RoomsTopPage extends StatefulWidget {
@@ -108,7 +108,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                         // ルーム1部屋
                         Firestore.addUsers(document.id, widget.uid).then((_) {
                           Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => StudyPage(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
+                            builder: (context) => StudyRoom01(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
                           ));
                         });
                       } else {
