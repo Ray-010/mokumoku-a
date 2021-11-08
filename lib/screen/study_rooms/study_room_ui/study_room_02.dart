@@ -1,25 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mokumoku_a/screen/study_rooms/study_room_ui/timer_01.dart';
+import 'package:mokumoku_a/screen/study_rooms/study_room_ui/timer_02.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
 import 'package:intl/intl.dart' as intl;
 
-// ルーム1部屋
-// TODO：ターゲット層が大学生＝ポップよりおしゃれな感じにしたい
-class StudyRoom01 extends StatefulWidget {
+// ルーム2部屋
+// TODO：ひたすらポップで親しみやすい
+class StudyRoom02 extends StatefulWidget {
   final String title;
   final DateTime finishedTime;
   final String documentId;
   final String myUid;
 
-  StudyRoom01(this.title, this.finishedTime, this.documentId, this.myUid);
+  StudyRoom02(this.title, this.finishedTime, this.documentId, this.myUid);
 
   @override
-  _StudyRoom01State createState() => _StudyRoom01State();
+  _StudyRoom02State createState() => _StudyRoom02State();
 }
 
-class _StudyRoom01State extends State<StudyRoom01> {
+class _StudyRoom02State extends State<StudyRoom02> {
 
   List<Color> colorsList = [
     Colors.red,
@@ -85,25 +85,12 @@ class _StudyRoom01State extends State<StudyRoom01> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title:  RichText(
-          text: TextSpan(
-              children: [
-                TextSpan(
-                  text: '『' + widget.title + '』',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextSpan(
-                  text: '部屋',
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 20,
-                  ),
-                ),
-              ]
+        title:  Text(
+          widget.title,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
           ),
         ),
 
@@ -171,7 +158,7 @@ class _StudyRoom01State extends State<StudyRoom01> {
           ),
 
           // タイマー
-          StudyPageTimer01(),
+          StudyPageTimer02(),
 
           // タイムライン
           Container(
