@@ -80,23 +80,25 @@ class _StudyRoom02State extends State<StudyRoom02> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.blue[200],
+        elevation: 1.0,
         title:  Text(
           widget.title,
           style: TextStyle(
-            color: Colors.black,
+            // color: Colors.black,
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
-
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
+        //
+        // iconTheme: IconThemeData(
+        //   color: Colors.black,
+        // ),
       ),
 
       body: Column(
@@ -104,56 +106,50 @@ class _StudyRoom02State extends State<StudyRoom02> {
 
           // 滞在時間が長いランキング上位10名表示
           Container(
-            height: 120,
+            height: 100,
             padding: EdgeInsets.only(top:10.0),
-            child: Column(
-              children: [
-                // アイコン表示
-                StreamBuilder<QuerySnapshot>(
-                    stream: Firestore.roomRef
-                        .doc(widget.documentId)
-                        .collection('users')
-                        .where('inRoom', isEqualTo: true)
-                        .orderBy("inTime")
-                        .limit(10)
-                        .snapshots(),
-                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if(!snapshot.hasData) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      return Container(
-                        height: 90,
-                        padding: EdgeInsets.only(bottom: 10.0),
-                        decoration: BoxDecoration(
-                          border: Border(bottom: BorderSide(
-                            color: Colors.grey,
-                            width: 1.0,
-                          )),
-                        ),
+            color: Colors.blue,
 
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: snapshot.data!.docs.map((document) {
-                            Map data = document.data()! as Map;
-                            return AnimatedContainer(
-                                duration: Duration(milliseconds: 1000),
-                                curve: Curves.bounceOut,
-                                child: Container(
-                                  padding: EdgeInsets.only(left: 8.0, top: 5),
-                                  alignment: Alignment.topCenter,
-                                  child: CircleAvatar(
-                                    backgroundImage: AssetImage(imagesList[data['imageIndex']]),
-                                    backgroundColor: colorsList[data['color']],
-                                    radius: 40,
-                                  ),
-                                )
-                            );
-                          }).toList(),
-                        ),
-                      );
-                    }
-                ),
-              ],
+            child: StreamBuilder<QuerySnapshot>(
+                stream: Firestore.roomRef
+                    .doc(widget.documentId)
+                    .collection('users')
+                    .where('inRoom', isEqualTo: true)
+                    .orderBy("inTime")
+                    .limit(10)
+                    .snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if(!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  return Container(
+                    height: 90,
+                    padding: EdgeInsets.only(bottom: 10.0),
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: snapshot.data!.docs.map((document) {
+                        Map data = document.data()! as Map;
+                        return AnimatedContainer(
+                            duration: Duration(milliseconds: 1000),
+                            curve: Curves.bounceOut,
+                            child: Container(
+                              padding: EdgeInsets.only(left: 3.0, top: 5),
+                              alignment: Alignment.topCenter,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 40,
+                                child: CircleAvatar(
+                                  backgroundImage: AssetImage(imagesList[data['imageIndex']]),
+                                  backgroundColor: colorsList[data['color']],
+                                  radius: 35,
+                                ),
+                              ),
+                            )
+                        );
+                      }).toList(),
+                    ),
+                  );
+                }
             ),
           ),
 
@@ -162,12 +158,13 @@ class _StudyRoom02State extends State<StudyRoom02> {
 
           // タイムライン
           Container(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(3.0),
             child: Text(
-              'TIMELINE',
+              'タイムライン',
               style: TextStyle(
                 letterSpacing: 2.0,
-                fontSize: 16,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -189,7 +186,7 @@ class _StudyRoom02State extends State<StudyRoom02> {
                     decoration: BoxDecoration(
                       border: Border(top: BorderSide(
                         color: Colors.grey,
-                        width: 1.0, // Underline thickness
+                        width: 3.0, // Underline thickness
                       )),
                     ),
                     child: ListView(
@@ -215,8 +212,8 @@ class _StudyRoom02State extends State<StudyRoom02> {
       decoration: BoxDecoration(
         color: data['uid'] == widget.myUid ? Colors.lightBlue[50] : Colors.white,
         border: Border(bottom: BorderSide(
-          color: Colors.black26,
-          width: 1.0,
+          color: Colors.grey,
+          width: 1.0, // Underline thickness
         )),
       ),
       child: Row(
@@ -224,7 +221,8 @@ class _StudyRoom02State extends State<StudyRoom02> {
         children: [
           // アイコン
           Container(
-            width: 70,
+            // color: Colors.green,
+            width: 60,
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             alignment: Alignment.topCenter,
             child: CircleAvatar(
@@ -236,19 +234,21 @@ class _StudyRoom02State extends State<StudyRoom02> {
 
           // メッセージ
           Container(
-            width: MediaQuery.of(context).size.width - 120,
+            // color: Colors.orangeAccent,
+            width: MediaQuery.of(context).size.width - 110,
             padding: EdgeInsets.only(left: 3.0),
 
             child: Text(
               data['message'],
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 18,
               ),
             ),
           ),
 
           // 時間
           Container(
+            // color: Colors.redAccent,
             width: 50,
             alignment: Alignment.center,
             padding: const EdgeInsets.only(top: 5),

@@ -12,7 +12,7 @@ class StudyPageTimer02 extends StatelessWidget {
       child: Consumer<TimerProvider>(
           builder: (context, model, child) {
             return Container(
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery.of(context).size.height * 0.4,
 
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -20,7 +20,12 @@ class StudyPageTimer02 extends StatelessWidget {
 
                   // タイマーテキスト
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                    decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(
+                          color: model.started ? Colors.grey : Colors.lightBlueAccent,
+                          width: 5.0, // Underline thickness
+                        ))
+                    ),
                     child: Text(
                       model.timeToDisplay,
                       style: TextStyle(
