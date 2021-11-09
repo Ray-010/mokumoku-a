@@ -5,6 +5,7 @@ import 'package:mokumoku_a/screen/study_rooms/add_study_room.dart';
 import 'package:mokumoku_a/screen/study_rooms/study_page.dart';
 import 'package:mokumoku_a/screen/study_rooms/study_room_ui/study_room_01.dart';
 import 'package:mokumoku_a/screen/study_rooms/study_room_ui/study_room_02.dart';
+import 'package:mokumoku_a/screen/study_rooms/study_room_ui/study_room_03.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
 
 class RoomsTopPage extends StatefulWidget {
@@ -106,10 +107,17 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                     ),
                     onTap: (){
                       if (data['title'] == 'ルーム1') {
-                        // ルーム1部屋
+                        // // ルーム1部屋
+                        // Firestore.addUsers(document.id, widget.uid).then((_) {
+                        //   Navigator.push(context, MaterialPageRoute(
+                        //     builder: (context) => StudyRoom01(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
+                        //   ));
+                        // });
+
+                        // ルーム3部屋
                         Firestore.addUsers(document.id, widget.uid).then((_) {
                           Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => StudyRoom01(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
+                            builder: (context) => StudyRoom03(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
                           ));
                         });
                       } else if (data['title'] == 'ルーム2') {
