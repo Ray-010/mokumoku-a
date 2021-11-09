@@ -12,7 +12,7 @@ class StudyPageTimer01 extends StatelessWidget {
       child: Consumer<TimerProvider>(
           builder: (context, model, child) {
             return Container(
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery.of(context).size.height * 0.4,
 
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

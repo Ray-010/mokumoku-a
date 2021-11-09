@@ -85,25 +85,12 @@ class _StudyRoom01State extends State<StudyRoom01> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title:  RichText(
-          text: TextSpan(
-              children: [
-                TextSpan(
-                  text: '『' + widget.title + '』',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                TextSpan(
-                  text: '部屋',
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 20,
-                  ),
-                ),
-              ]
+        title:  Text(
+          widget.title,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
           ),
         ),
 
@@ -117,7 +104,7 @@ class _StudyRoom01State extends State<StudyRoom01> {
 
           // 滞在時間が長いランキング上位10名表示
           Container(
-            height: 120,
+            height: 80,
             padding: EdgeInsets.only(top:10.0),
             child: Column(
               children: [
@@ -135,7 +122,7 @@ class _StudyRoom01State extends State<StudyRoom01> {
                         return Center(child: CircularProgressIndicator());
                       }
                       return Container(
-                        height: 90,
+                        height: 70,
                         padding: EdgeInsets.only(bottom: 10.0),
                         decoration: BoxDecoration(
                           border: Border(bottom: BorderSide(
@@ -152,12 +139,12 @@ class _StudyRoom01State extends State<StudyRoom01> {
                                 duration: Duration(milliseconds: 1000),
                                 curve: Curves.bounceOut,
                                 child: Container(
-                                  padding: EdgeInsets.only(left: 8.0, top: 5),
+                                  padding: EdgeInsets.only(left: 3.0, top: 5),
                                   alignment: Alignment.topCenter,
                                   child: CircleAvatar(
                                     backgroundImage: AssetImage(imagesList[data['imageIndex']]),
                                     backgroundColor: colorsList[data['color']],
-                                    radius: 40,
+                                    radius: 30,
                                   ),
                                 )
                             );
@@ -237,39 +224,50 @@ class _StudyRoom01State extends State<StudyRoom01> {
         children: [
           // アイコン
           Container(
-            width: 70,
+            width: 60,
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             alignment: Alignment.topCenter,
             child: CircleAvatar(
               backgroundImage: AssetImage(imagesList[data['imageIndex']]),
               backgroundColor: colorsList[data['color']],
-              radius: 25,
+              radius: 20,
             ),
           ),
 
           // メッセージ
           Container(
-            width: MediaQuery.of(context).size.width - 120,
+            width: MediaQuery.of(context).size.width - 110,
             padding: EdgeInsets.only(left: 3.0),
 
             child: Text(
               data['message'],
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 16,
               ),
             ),
           ),
 
           // 時間
           Container(
-            width: 50,
+            width: 40,
             alignment: Alignment.center,
             padding: const EdgeInsets.only(top: 5),
-            child: Text(
-              intl.DateFormat('HH:mm').format(data['createdAt'].toDate().add(Duration(hours: 9))),
-              style: TextStyle(
-                fontSize: 12,
-              ),
+            child: Column(
+              children: [
+                Text(
+                  intl.DateFormat('MM/dd').format(data['createdAt'].toDate().add(Duration(hours: 9))),
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+
+                Text(
+                  intl.DateFormat('HH:mm').format(data['createdAt'].toDate().add(Duration(hours: 9))),
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
