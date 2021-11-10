@@ -107,19 +107,19 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                     ),
                     onTap: (){
                       if (data['title'] == 'ルーム1') {
-                        // // ルーム1部屋
-                        // Firestore.addUsers(document.id, widget.uid).then((_) {
-                        //   Navigator.push(context, MaterialPageRoute(
-                        //     builder: (context) => StudyRoom01(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
-                        //   ));
-                        // });
-
-                        // ルーム3部屋
+                        // ルーム1部屋
                         Firestore.addUsers(document.id, widget.uid).then((_) {
                           Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => StudyRoom03(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
+                            builder: (context) => StudyRoom01(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
                           ));
                         });
+
+                        // // ルーム3部屋
+                        // Firestore.addUsers(document.id, widget.uid).then((_) {
+                        //   Navigator.push(context, MaterialPageRoute(
+                        //     builder: (context) => StudyRoom03(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
+                        //   ));
+                        // });
                       } else if (data['title'] == 'ルーム2') {
                         // ルーム1部屋
                         Firestore.addUsers(document.id, widget.uid).then((_) {
@@ -130,7 +130,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                       } else {
                         Firestore.addUsers(document.id, widget.uid).then((_) {
                           Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => StudyPage(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
+                            builder: (context) => StudyRoom03(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
                           ));
                         });
                       }
