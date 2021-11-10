@@ -24,13 +24,14 @@ class StudyPageTimer extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                         border: Border(bottom: BorderSide(
-                          color: model.started ? Colors.grey : Colors.lightBlueAccent,
+                          color: model.started ? Colors.grey : (Colors.lightBlue[600])!,
                           width: 5.0, // Underline thickness
                         ))
                     ),
                     child: Text(
                       model.timeToDisplay,
                       style: TextStyle(
+                        color: model.started ? Colors.black : Colors.lightBlue[700],
                         fontSize: 36,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 3.0,
@@ -45,7 +46,8 @@ class StudyPageTimer extends StatelessWidget {
                     model.started ? model.startTimer() : model.stopTimer();
                   },
                   iconSize: 50,
-                  color: model.started ? Colors.green : Colors.red,
+                  color: model.started ? Colors.grey : (Colors.lightBlue[600])!,
+                  // color: Theme.of(context).primaryColor,
                   icon: Icon(model.started ? Icons.play_circle_fill : Icons.pause_circle_filled),
                 ),
               ],
