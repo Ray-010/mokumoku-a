@@ -114,7 +114,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                           ));
                         });
 
-                        // // ルーム3部屋
+                        // // ルーム3部屋:Youtubeイメージのもの
                         // Firestore.addUsers(document.id, widget.uid).then((_) {
                         //   Navigator.push(context, MaterialPageRoute(
                         //     builder: (context) => StudyRoom03(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
@@ -130,7 +130,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                       } else {
                         Firestore.addUsers(document.id, widget.uid).then((_) {
                           Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => StudyRoom03(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
+                            builder: (context) => StudyPage(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
                           ));
                         });
                       }

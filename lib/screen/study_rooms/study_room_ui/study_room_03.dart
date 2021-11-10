@@ -137,7 +137,7 @@ class _StudyRoom03State extends State<StudyRoom03> {
                   decoration: BoxDecoration(
                     border: Border(top: BorderSide(
                       color: Colors.grey,
-                      width: 1.0, // Underline thickness
+                      width: 1.0,
                     )),
                   ),
                   child: ListView(
@@ -176,7 +176,6 @@ class _StudyRoom03State extends State<StudyRoom03> {
                     return Center(child: CircularProgressIndicator());
                   }
                   return Container(
-                    // color: Colors.lightBlue[100],
                     decoration: BoxDecoration(
                       border: Border(top: BorderSide(
                         color: Colors.grey,
@@ -210,7 +209,6 @@ class _StudyRoom03State extends State<StudyRoom03> {
         children: [
           // アイコン
           Container(
-            // color: Colors.green,
             width: 50,
             padding: EdgeInsets.only(left: 5.0),
             alignment: Alignment.topCenter,
