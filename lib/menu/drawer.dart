@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mokumoku_a/menu/questionnaire/question_first.dart';
 import 'package:mokumoku_a/menu/setting.dart';
+import 'package:mokumoku_a/menu/test.dart';
 
 class DrawerPage extends StatelessWidget {
   String uid;
@@ -51,7 +52,7 @@ class DrawerPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => QuestionFirstPage(),
+                  builder: (context) => MyHomePage(),
                 ),
               );
             },
