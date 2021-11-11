@@ -1,9 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:mokumoku_a/menu/questionnaire/question_first.dart';
-import 'package:mokumoku_a/menu/setting.dart';
-import 'package:mokumoku_a/screen/study_rooms/add_study_room.dart';
 import 'package:mokumoku_a/screen/study_rooms/study_page.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
 
@@ -223,7 +219,7 @@ class _RoomsTopPageTestState extends State<RoomsTopPageTest> {
                               // 部屋に入る人をrooms>usersにセットする
                               Firestore.addUsers(document.id, widget.uid).then((_) {
                                 Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => StudyPage(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
+                                  builder: (context) => StudyPage(data['title'], document.id, widget.uid),
                                 ));
                               });
                             }

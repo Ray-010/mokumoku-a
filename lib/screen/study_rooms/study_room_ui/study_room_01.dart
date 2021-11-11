@@ -5,15 +5,14 @@ import 'package:mokumoku_a/screen/study_rooms/study_room_ui/timer_01.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
 import 'package:intl/intl.dart' as intl;
 
-// ルーム1部屋
+// Room01部屋
 // TODO：ターゲット層が大学生＝ポップよりおしゃれな感じにしたい
 class StudyRoom01 extends StatefulWidget {
   final String title;
-  final DateTime finishedTime;
   final String documentId;
   final String myUid;
 
-  StudyRoom01(this.title, this.finishedTime, this.documentId, this.myUid);
+  StudyRoom01(this.title, this.documentId, this.myUid);
 
   @override
   _StudyRoom01State createState() => _StudyRoom01State();
@@ -185,7 +184,6 @@ class _StudyRoom01State extends State<StudyRoom01> {
                     return Center(child: CircularProgressIndicator());
                   }
                   return Container(
-                    // color: Colors.lightBlue[100],
                     decoration: BoxDecoration(
                       border: Border(top: BorderSide(
                         color: Colors.grey,

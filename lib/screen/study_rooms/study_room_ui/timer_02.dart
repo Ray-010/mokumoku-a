@@ -23,7 +23,7 @@ class StudyPageTimer02 extends StatelessWidget {
                     decoration: BoxDecoration(
                         border: Border(bottom: BorderSide(
                           color: model.started ? Colors.grey : Colors.lightBlueAccent,
-                          width: 5.0, // Underline thickness
+                          width: 5.0,
                         ))
                     ),
                     child: Text(
