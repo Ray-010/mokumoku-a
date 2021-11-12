@@ -54,7 +54,9 @@ class TimerProvider extends ChangeNotifier {
 
   @override
   void dispose() {
+    // 勉強記録をここでする
     try {
+      print('勉強記録');
       _timer.cancel();
     } catch(e) {
 
