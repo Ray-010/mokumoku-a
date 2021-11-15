@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mokumoku_a/screen/sign_up/sign_up.dart';
 import 'package:mokumoku_a/screen/sign_up/sign_up_01.dart';
+import 'package:mokumoku_a/screen/sign_up/sign_up_02.dart';
 import 'package:mokumoku_a/screen/study_rooms/rooms_top_page.dart';
 import 'package:mokumoku_a/screen/study_rooms/rooms_top_page_test.dart';
 import 'package:mokumoku_a/utils/shared_prefs.dart';
@@ -16,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final uid = SharedPrefs.getUid();
     if(uid != '') {
       // await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUpScreen()));
-      await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUpScreen01()));
+      await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUpScreen02()));
     } else {
       await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomsTopPage(uid)));
       // await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomsTopPageTest(uid)));
