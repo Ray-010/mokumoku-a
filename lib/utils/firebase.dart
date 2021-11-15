@@ -104,6 +104,14 @@ class Firestore {
     return myMessages;
   }
 
+  static Future<void> updateColor(uid, color) async {
+    return await userRef
+        .doc(uid)
+        .update({
+          'color': color
+        });
+  }
+
   static Future<void> updateMessages(uid, initialMessage, progressMessage, lastMessage) async {
     return await userRef
         .doc(uid)
