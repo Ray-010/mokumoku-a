@@ -13,7 +13,6 @@ class StudyPageTimer03 extends StatelessWidget {
           builder: (context, model, child) {
             return Container(
               height: MediaQuery.of(context).size.height * 0.5,
-              // color: Colors.lightBlueAccent,
 
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -42,7 +41,6 @@ class StudyPageTimer03 extends StatelessWidget {
                       model.started ? model.startTimer() : model.stopTimer();
                     },
                     iconSize: 50,
-                    // color: Colors.white,
                     color: Colors.black,
                     icon: Icon(model.started ? Icons.play_circle_fill : Icons.pause_circle_filled),
                   ),

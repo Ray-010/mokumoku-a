@@ -7,13 +7,15 @@ import 'package:mokumoku_a/utils/firebase.dart';
 import 'package:intl/intl.dart' as intl;
 
 // 勉強部屋に入った後の画面 実際の勉強部屋
+// TODO：スマホについている戻るボタンで退出すると人数がバグる
+// 例：0名で入って、戻るボタンで部屋から出ると‐1名になる
+// 1つの案：pushReplacement使って戻るボタンで戻れないようにしたうえで、退出するためのボタンをもっと分かりやすくするべき
 class StudyPage extends StatefulWidget {
   final String title;
-  final DateTime finishedTime;
   final String documentId;
   final String myUid;
 
-  StudyPage(this.title, this.finishedTime, this.documentId, this.myUid);
+  StudyPage(this.title, this.documentId, this.myUid);
 
   @override
   _StudyPageState createState() => _StudyPageState();

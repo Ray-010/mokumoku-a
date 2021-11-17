@@ -16,8 +16,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if(uid == '') {
       await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUpScreen()));
     } else {
-      // await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomsTopPage(uid)));
-      await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomsTopPageTest(uid)));
+      await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomsTopPage(uid)));
+      // await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomsTopPageTest(uid)));
     }
   }
 

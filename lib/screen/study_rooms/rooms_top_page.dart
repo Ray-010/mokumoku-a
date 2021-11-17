@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mokumoku_a/menu/drawer.dart';
-import 'package:mokumoku_a/screen/study_rooms/add_study_room.dart';
 import 'package:mokumoku_a/screen/study_rooms/study_page.dart';
 import 'package:mokumoku_a/screen/study_rooms/study_room_ui/study_room_01.dart';
 import 'package:mokumoku_a/screen/study_rooms/study_room_ui/study_room_02.dart';
@@ -22,7 +21,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.roomRef
-          .orderBy('finishedTime', descending: true)
+          .orderBy('members', descending: true)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -34,21 +33,6 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
 
         return Scaffold(
           appBar: AppBar(
-            actions: [
-              // プラスボタン ここから部屋を新しく作れる
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => AddStudyRoomPage(),
-                      fullscreenDialog: true,
-                    ));
-                  },
-                ),
-              ),
-            ],
             title: Text(
               '勉強部屋',
               style: TextStyle(
@@ -71,7 +55,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                   decoration: BoxDecoration(
                       border: Border(bottom: BorderSide(
                         color: Colors.grey,
-                        width: 1.0, // Underline thickness
+                        width: 1.0,
                       ))
                   ),
                   child: ListTile(
@@ -106,31 +90,28 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                       ),
                     ),
                     onTap: (){
-                      if (data['title'] == 'ルーム1') {
-                        // ルーム1部屋
+                      if (data['title'] == 'Room01') {
                         Firestore.addUsers(document.id, widget.uid).then((_) {
                           Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => StudyRoom01(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
+                            builder: (context) => StudyRoom01(data['title'], document.id, widget.uid),
                           ));
                         });
-
-                        // // ルーム3部屋:Youtubeイメージのもの
-                        // Firestore.addUsers(document.id, widget.uid).then((_) {
-                        //   Navigator.push(context, MaterialPageRoute(
-                        //     builder: (context) => StudyRoom03(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
-                        //   ));
-                        // });
-                      } else if (data['title'] == 'ルーム2') {
-                        // ルーム1部屋
+                      } else if (data['title'] == 'Room02') {
                         Firestore.addUsers(document.id, widget.uid).then((_) {
                           Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => StudyRoom02(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
+                            builder: (context) => StudyRoom02(data['title'], document.id, widget.uid),
+                          ));
+                        });
+                      } else if (data['title'] == 'Room03') {
+                        Firestore.addUsers(document.id, widget.uid).then((_) {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => StudyRoom03(data['title'], document.id, widget.uid),
                           ));
                         });
                       } else {
                         Firestore.addUsers(document.id, widget.uid).then((_) {
                           Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => StudyPage(data['title'], data['finishedTime'].toDate(), document.id, widget.uid),
+                            builder: (context) => StudyPage(data['title'], document.id, widget.uid),
                           ));
                         });
                       }
