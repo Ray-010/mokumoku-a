@@ -22,6 +22,7 @@ class StudyPage extends StatefulWidget {
 
   StudyPage(this.title, this.documentId, this.myUid, this.initialMessage, this.progressMessage, this.lastMessage, this.color, this.imageIndex);
 
+
   @override
   _StudyPageState createState() => _StudyPageState();
 }

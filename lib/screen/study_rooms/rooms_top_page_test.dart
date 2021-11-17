@@ -215,6 +215,7 @@ class _RoomsTopPageTestState extends State<RoomsTopPageTest> {
                           ),
                           onTap: (){
                             // roomInがTrueであれば入ることができる
+
                             // if (data['roomIn']) {
                             //   // 部屋に入る人をrooms>usersにセットする
                             //   Firestore.addUsers(document.id, widget.uid).then((_) {
@@ -223,6 +224,7 @@ class _RoomsTopPageTestState extends State<RoomsTopPageTest> {
                             //     ));
                             //   });
                             // }
+
                           },
                         ),
                       );

@@ -19,6 +19,7 @@ class StudyRoom01 extends StatefulWidget {
 
   StudyRoom01(this.title, this.documentId, this.myUid, this.initialMessage, this.progressMessage, this.lastMessage, this.color, this.imageIndex);
 
+
   @override
   _StudyRoom01State createState() => _StudyRoom01State();
 }

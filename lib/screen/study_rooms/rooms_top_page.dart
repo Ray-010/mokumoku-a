@@ -19,6 +19,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue[300],
@@ -43,9 +44,11 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
             decoration: BoxDecoration(
               border: Border.all(
                 color: Colors.black12,
+
               ),
               borderRadius: BorderRadius.circular(5.0,),
             ),
+
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -55,6 +58,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                     width: 50,
                     image: AssetImage('images/enter_room.png'),
                     color: Theme.of(context).primaryColor,
+
                   ),
                 ),
                 SizedBox(width: 20.0,),
@@ -180,8 +184,10 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                           });
                         },
                       ),
+
                     );
                   }).toList(),
+
                 );
               }
             ),
