@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mokumoku_a/screen/study_rooms/study_page.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
 
 class Top01 extends StatefulWidget {
