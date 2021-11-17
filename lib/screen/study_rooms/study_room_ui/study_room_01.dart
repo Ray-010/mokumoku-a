@@ -11,8 +11,14 @@ class StudyRoom01 extends StatefulWidget {
   final String title;
   final String documentId;
   final String myUid;
+  final String initialMessage;
+  final String progressMessage;
+  final String lastMessage;
+  final int color;
+  final int imageIndex;
 
-  StudyRoom01(this.title, this.documentId, this.myUid);
+  StudyRoom01(this.title, this.documentId, this.myUid, this.initialMessage, this.progressMessage, this.lastMessage, this.color, this.imageIndex);
+
 
   @override
   _StudyRoom01State createState() => _StudyRoom01State();
@@ -157,7 +163,7 @@ class _StudyRoom01State extends State<StudyRoom01> {
           ),
 
           // タイマー
-          StudyPageTimer01(),
+          StudyPageTimer01(widget.documentId, widget.myUid, widget.color, widget.imageIndex,widget.progressMessage),
 
           // タイムライン
           Container(

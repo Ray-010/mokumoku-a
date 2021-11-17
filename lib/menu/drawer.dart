@@ -16,7 +16,7 @@ class DrawerPage extends StatelessWidget {
           // ここにMokuMokuのメインキャラかロゴを入れる
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
               image: DecorationImage(
                 image: AssetImage('images/MokuMoku_logo_01.png'),
               ),

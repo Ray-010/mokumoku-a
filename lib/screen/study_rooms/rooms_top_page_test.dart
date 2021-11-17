@@ -215,14 +215,16 @@ class _RoomsTopPageTestState extends State<RoomsTopPageTest> {
                           ),
                           onTap: (){
                             // roomInがTrueであれば入ることができる
-                            if (data['roomIn']) {
-                              // 部屋に入る人をrooms>usersにセットする
-                              Firestore.addUsers(document.id, widget.uid).then((_) {
-                                Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => StudyPage(data['title'], document.id, widget.uid),
-                                ));
-                              });
-                            }
+
+                            // if (data['roomIn']) {
+                            //   // 部屋に入る人をrooms>usersにセットする
+                            //   Firestore.addUsers(document.id, widget.uid).then((_) {
+                            //     Navigator.push(context, MaterialPageRoute(
+                            //       builder: (context) => StudyPage(data['title'], document.id, widget.uid),
+                            //     ));
+                            //   });
+                            // }
+
                           },
                         ),
                       );
