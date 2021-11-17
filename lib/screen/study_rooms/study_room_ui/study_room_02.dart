@@ -5,15 +5,19 @@ import 'package:mokumoku_a/screen/study_rooms/study_room_ui/timer_02.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
 import 'package:intl/intl.dart' as intl;
 
-// ルーム2部屋
-// TODO：ひたすらポップで親しみやすい
+// Room02部屋
+// TODO：親しみやすいイメージに
 class StudyRoom02 extends StatefulWidget {
   final String title;
-  final DateTime finishedTime;
   final String documentId;
   final String myUid;
+  final String initialMessage;
+  final String progressMessage;
+  final String lastMessage;
+  final int color;
+  final int imageIndex;
 
-  StudyRoom02(this.title, this.finishedTime, this.documentId, this.myUid);
+  StudyRoom02(this.title, this.documentId, this.myUid, this.initialMessage, this.progressMessage, this.lastMessage, this.color, this.imageIndex);
 
   @override
   _StudyRoom02State createState() => _StudyRoom02State();
@@ -85,7 +89,6 @@ class _StudyRoom02State extends State<StudyRoom02> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Colors.blue[200],
         elevation: 1.0,
         title:  Text(
           widget.title,
@@ -95,10 +98,6 @@ class _StudyRoom02State extends State<StudyRoom02> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        //
-        // iconTheme: IconThemeData(
-        //   color: Colors.black,
-        // ),
       ),
 
       body: Column(
@@ -154,7 +153,7 @@ class _StudyRoom02State extends State<StudyRoom02> {
           ),
 
           // タイマー
-          StudyPageTimer02(),
+          StudyPageTimer02(widget.documentId, widget.myUid, widget.color, widget.imageIndex,widget.progressMessage),
 
           // タイムライン
           Container(
@@ -182,7 +181,6 @@ class _StudyRoom02State extends State<StudyRoom02> {
                     return Center(child: CircularProgressIndicator());
                   }
                   return Container(
-                    // color: Colors.lightBlue[100],
                     decoration: BoxDecoration(
                       border: Border(top: BorderSide(
                         color: Colors.grey,
@@ -213,7 +211,7 @@ class _StudyRoom02State extends State<StudyRoom02> {
         color: data['uid'] == widget.myUid ? Colors.lightBlue[50] : Colors.white,
         border: Border(bottom: BorderSide(
           color: Colors.grey,
-          width: 1.0, // Underline thickness
+          width: 1.0,
         )),
       ),
       child: Row(
@@ -221,7 +219,6 @@ class _StudyRoom02State extends State<StudyRoom02> {
         children: [
           // アイコン
           Container(
-            // color: Colors.green,
             width: 60,
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             alignment: Alignment.topCenter,
@@ -234,7 +231,6 @@ class _StudyRoom02State extends State<StudyRoom02> {
 
           // メッセージ
           Container(
-            // color: Colors.orangeAccent,
             width: MediaQuery.of(context).size.width - 110,
             padding: EdgeInsets.only(left: 3.0),
 
@@ -248,7 +244,6 @@ class _StudyRoom02State extends State<StudyRoom02> {
 
           // 時間
           Container(
-            // color: Colors.redAccent,
             width: 50,
             alignment: Alignment.center,
             padding: const EdgeInsets.only(top: 5),

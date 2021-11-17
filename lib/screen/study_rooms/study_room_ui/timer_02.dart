@@ -5,10 +5,18 @@ import 'package:provider/provider.dart';
 // 勉強部屋内のタイマー表示画面
 class StudyPageTimer02 extends StatelessWidget {
 
+  final String roomDocumentId;
+  final String uid;
+  final int color;
+  final int imageIndex;
+  final String progressMessage;
+
+  StudyPageTimer02(this.roomDocumentId, this.uid, this.color, this.imageIndex, this.progressMessage);
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<TimerProvider>(
-      create: (_) => TimerProvider(),
+      create: (_) => TimerProvider(roomDocumentId, uid, color, imageIndex, progressMessage),
       child: Consumer<TimerProvider>(
           builder: (context, model, child) {
             return Container(
@@ -23,7 +31,7 @@ class StudyPageTimer02 extends StatelessWidget {
                     decoration: BoxDecoration(
                         border: Border(bottom: BorderSide(
                           color: model.started ? Colors.grey : Colors.lightBlueAccent,
-                          width: 5.0, // Underline thickness
+                          width: 5.0,
                         ))
                     ),
                     child: Text(

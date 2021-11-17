@@ -4,11 +4,20 @@ import 'package:provider/provider.dart';
 
 // 勉強部屋内のタイマー表示画面
 class StudyPageTimer01 extends StatelessWidget {
+  
+  final String roomDocumentId;
+  final String uid;
+  final int color;
+  final int imageIndex;
+  final String progressMessage;
+
+  StudyPageTimer01(this.roomDocumentId, this.uid, this.color, this.imageIndex, this.progressMessage);
+
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<TimerProvider>(
-      create: (_) => TimerProvider(),
+      create: (_) => TimerProvider(roomDocumentId, uid, color, imageIndex, progressMessage),
       child: Consumer<TimerProvider>(
           builder: (context, model, child) {
             return Container(

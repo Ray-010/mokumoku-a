@@ -5,15 +5,19 @@ import 'package:mokumoku_a/screen/study_rooms/study_room_ui/timer_03.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
 import 'package:intl/intl.dart' as intl;
 
-// ルーム3部屋
+// Room03部屋
 // TODO：新しい形を目指す。チャットはYoutubeっぽく
 class StudyRoom03 extends StatefulWidget {
   final String title;
-  final DateTime finishedTime;
   final String documentId;
   final String myUid;
+  final String initialMessage;
+  final String progressMessage;
+  final String lastMessage;
+  final int color;
+  final int imageIndex;
 
-  StudyRoom03(this.title, this.finishedTime, this.documentId, this.myUid);
+  StudyRoom03(this.title, this.documentId, this.myUid, this.initialMessage, this.progressMessage, this.lastMessage, this.color, this.imageIndex);
 
   @override
   _StudyRoom03State createState() => _StudyRoom03State();
@@ -105,7 +109,7 @@ class _StudyRoom03State extends State<StudyRoom03> {
         children: [
 
           // タイマー
-          StudyPageTimer03(),
+          StudyPageTimer03(widget.documentId, widget.myUid, widget.color, widget.imageIndex,widget.progressMessage),
 
           // タイムライン
           Container(
@@ -179,7 +183,7 @@ class _StudyRoom03State extends State<StudyRoom03> {
                     decoration: BoxDecoration(
                       border: Border(top: BorderSide(
                         color: Colors.grey,
-                        width: 1.0, // Underline thickness
+                        width: 1.0,
                       )),
                     ),
                     child: ListView(

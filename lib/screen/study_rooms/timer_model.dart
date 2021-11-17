@@ -1,8 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:mokumoku_a/utils/firebase.dart';
 
 class TimerProvider extends ChangeNotifier {
+
+  final String roomDocumentId;
+  final String uid;
+  final int color;
+  final int imageIndex;
+  final String progressMessage;
+  TimerProvider(this.roomDocumentId, this.uid, this.color, this.imageIndex, this.progressMessage);
+
   int hour = 0;
   int min = 0;
   int sec = 0;
@@ -13,7 +22,7 @@ class TimerProvider extends ChangeNotifier {
   String timeToDisplay = '00:00:00';
   late Timer _timer;
 
-  static const durationSec = const Duration(seconds: 1);
+  static const durationSec = Duration(seconds: 1);
   
   void startTimer() {
     if(stopped!=true) {
@@ -36,6 +45,18 @@ class TimerProvider extends ChangeNotifier {
         int s = this.timeForTimer - (60*m);
         this.timeToDisplay = '00:' + m.toString().padLeft(2, "0") + ':' + s.toString().padLeft(2, "0");
         this.timeForTimer += 1;
+        
+        // 30分経過でprogressmessageを送信
+        if(m==30 && s==0) {
+          Firestore.sendMessage(
+            roomDocumentId, 
+            uid, 
+            "$progressMessage  --$m分経過", 
+            color,
+            imageIndex
+          );
+        }
+
       } else {
         int h = (this.timeForTimer / 3600).floor();
         int t = this.timeForTimer -(3600*h);
@@ -43,6 +64,17 @@ class TimerProvider extends ChangeNotifier {
         int s = t-(60*m);
         this.timeToDisplay = h.toString().padLeft(2, "0") + ':' + m.toString().padLeft(2, "0") + ':' + s.toString().padLeft(2, "0");
         this.timeForTimer += 1;
+
+        // 30分毎経過でprogressmessageを送信
+        if((m==0 || m==30) && s==0) {
+          Firestore.sendMessage(
+            roomDocumentId, 
+            uid, 
+            "$progressMessage  --$h時間$m分経過", 
+            color,
+            imageIndex
+          );
+        }
       }
       notifyListeners();
     });
@@ -52,11 +84,10 @@ class TimerProvider extends ChangeNotifier {
     stopped = false;
   }
 
+  // なぜか機能しない。ただtimerをcancelせずに部屋を退出してもエラーを吐かない。原因不明
   @override
   void dispose() {
-    // 勉強記録をここでする
     try {
-      print('勉強記録');
       _timer.cancel();
     } catch(e) {
 

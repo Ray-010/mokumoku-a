@@ -7,13 +7,20 @@ import 'package:mokumoku_a/utils/firebase.dart';
 import 'package:intl/intl.dart' as intl;
 
 // 勉強部屋に入った後の画面 実際の勉強部屋
+// TODO：スマホについている戻るボタンで退出すると人数がバグる
+// 例：0名で入って、戻るボタンで部屋から出ると‐1名になる
+// 1つの案：pushReplacement使って戻るボタンで戻れないようにしたうえで、退出するためのボタンをもっと分かりやすくするべき
 class StudyPage extends StatefulWidget {
   final String title;
-  final DateTime finishedTime;
   final String documentId;
   final String myUid;
+  final String initialMessage;
+  final String progressMessage;
+  final String lastMessage;
+  final int color;
+  final int imageIndex;
 
-  StudyPage(this.title, this.finishedTime, this.documentId, this.myUid);
+  StudyPage(this.title, this.documentId, this.myUid, this.initialMessage, this.progressMessage, this.lastMessage, this.color, this.imageIndex);
 
   @override
   _StudyPageState createState() => _StudyPageState();
@@ -53,12 +60,6 @@ class _StudyPageState extends State<StudyPage> {
     'images/MokuMoku_alpha_icon_06.PNG',
   ];
 
-  String initialMessage = '';
-  String progressMessage = '';
-  String lastMessage = '';
-  int color = 0;
-  int imageIndex = 0;
-
   _showAlertDialog(context) {
     return showDialog<void>(
       context: context, 
@@ -70,7 +71,7 @@ class _StudyPageState extends State<StudyPage> {
           actions: [
             TextButton(
               onPressed: (){
-                Firestore.sendMessage(widget.documentId, widget.myUid, lastMessage, color, imageIndex).then((_) {
+                Firestore.sendMessage(widget.documentId, widget.myUid, widget.lastMessage, widget.color, widget.imageIndex).then((_) {
                   Firestore.getOutRoom(widget.documentId, widget.myUid);
                 }).then((_) {
                   Navigator.pushReplacement(context, MaterialPageRoute(
@@ -78,7 +79,7 @@ class _StudyPageState extends State<StudyPage> {
                   ));
                 });
               }, 
-              child: Text('Yes')
+              child: Text('退出')
             ),
             TextButton(
               onPressed: (){
@@ -91,7 +92,7 @@ class _StudyPageState extends State<StudyPage> {
                   borderRadius: BorderRadius.circular(10.0)
                 ),
                 child: Text(
-                  'CANCEL',
+                  'キャンセル',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18.0,
@@ -108,21 +109,14 @@ class _StudyPageState extends State<StudyPage> {
 
   @override
   void initState() {
-    Firestore.getUsersMessages(widget.myUid).then((messages) {
-      initialMessage = messages.initialMessage;
-      progressMessage = messages.progressMessage;
-      lastMessage = messages.lastMessage;
-      color = messages.color;
-      imageIndex = messages.imageIndex;
-    }).then((_) {
-      Firestore.sendMessage(widget.documentId, widget.myUid, initialMessage, color, imageIndex);
-    });
+    Firestore.sendMessage(widget.documentId, widget.myUid, widget.initialMessage, widget.color, widget.imageIndex);
     super.initState();
   }
 
   @override
   Future<void> dispose() async {
-    Firestore.sendMessage(widget.documentId, widget.myUid, lastMessage, color, imageIndex);
+    print('dispose done');
+    Firestore.sendMessage(widget.documentId, widget.myUid, widget.lastMessage, widget.color, widget.imageIndex);
     Firestore.getOutRoom(widget.documentId, widget.myUid);
     super.dispose();
   }
@@ -221,20 +215,12 @@ class _StudyPageState extends State<StudyPage> {
             ),
           ),
           // タイマー
-          StudyPageTimer(),
+          StudyPageTimer(widget.documentId, widget.myUid, widget.color, widget.imageIndex,widget.progressMessage),
 
           Flexible(
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
-                // border: Border.all(
-                //   color: Theme.of(context).primaryColor,
-                //   width: 2.0,
-                // ),
-                // borderRadius: BorderRadius.only(
-                //   topLeft: Radius.circular(20.0),
-                //   topRight: Radius.circular(20.0),
-                // ),
               ),
               child: Column(
                 children: [
