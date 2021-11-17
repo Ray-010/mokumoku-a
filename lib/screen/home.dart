@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mokumoku_a/screen/sign_up/sign_up.dart';
+import 'package:mokumoku_a/screen/sign_up/sign_up_01.dart';
 import 'package:mokumoku_a/screen/study_rooms/rooms_top_page.dart';
-import 'package:mokumoku_a/screen/study_rooms/rooms_top_page_test.dart';
 import 'package:mokumoku_a/utils/shared_prefs.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,7 +13,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> checkUser() async{
     final uid = SharedPrefs.getUid();
     if(uid == '') {
-      await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUpScreen()));
+      // await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUpScreen()));
+      await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => SignUpScreen01()));
     } else {
       await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomsTopPage(uid)));
       // await Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => RoomsTopPageTest(uid)));

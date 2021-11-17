@@ -40,4 +40,20 @@ class SignUpModel {
     });
     await SharedPrefs.setUid(doc.id);
   }
+
+  // sign_up_01バージョン
+  // アイコンを出しながら色を選択できる
+  static Future signUp01(colorIndex, imageIndex) async {
+    print('in signupcolor');
+    final doc = FirebaseFirestore.instance.collection('users').doc();
+    await doc.set({
+      'color': colorIndex,
+      'createdAt': Timestamp.now(),
+      'imageIndex': imageIndex,
+      'initialMessage': initialMessage[Random().nextInt(initialMessage.length)],
+      'progressMessage': progressMessage[Random().nextInt(progressMessage.length)],
+      'lastMessage': lastMessage[Random().nextInt(lastMessage.length)],
+    });
+    await SharedPrefs.setUid(doc.id);
+  }
 }
