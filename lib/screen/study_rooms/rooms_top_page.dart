@@ -93,7 +93,7 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
           Flexible(
             child: StreamBuilder<QuerySnapshot>(
               stream: Firestore.roomRef
-                .orderBy('members', descending: true)
+                .orderBy('order')
                 .snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
@@ -107,87 +107,87 @@ class _RoomsTopPageState extends State<RoomsTopPage> {
                   children: snapshot.data!.docs.map((DocumentSnapshot document) {
                     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
             
-                    return Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0,),
-                      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0,),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black12
+                    return GestureDetector(
+                      onTap: () {
+                        Firestore.getUsersMessages(widget.uid).then((messages) {
+                          if (data['title'] == 'Room01') {
+                            Firestore.addUsers(document.id, widget.uid).then((_) {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => StudyRoom01(data['title'], document.id, widget.uid, messages.initialMessage, messages.progressMessage, messages.lastMessage, messages.color, messages.imageIndex),
+                              ));
+                            });
+                          } else if (data['title'] == 'Room02') {
+                            Firestore.addUsers(document.id, widget.uid).then((_) {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => StudyRoom02(data['title'], document.id, widget.uid, messages.initialMessage, messages.progressMessage, messages.lastMessage, messages.color, messages.imageIndex),
+                              ));
+                            });
+                          } else if (data['title'] == 'Room03') {
+                            Firestore.addUsers(document.id, widget.uid).then((_) {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => StudyRoom03(data['title'], document.id, widget.uid, messages.initialMessage, messages.progressMessage, messages.lastMessage, messages.color, messages.imageIndex,
+                              )));
+                            });
+                          } else {
+                            Firestore.addUsers(document.id, widget.uid).then((_) {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => StudyPage(data['title'], document.id, widget.uid, messages.initialMessage, messages.progressMessage, messages.lastMessage, messages.color, messages.imageIndex)
+                              ));
+                            });
+                          }
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0,),
+                        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0,),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black12
+                          ),
+                          borderRadius: BorderRadius.circular(5.0,),
                         ),
-                        borderRadius: BorderRadius.circular(5.0,),
+                        child: ListTile(
+                          // 部屋のタイトル
+                          leading: Container(
+                            width: 50,
+                            child: Image(
+                              image: AssetImage('images/${data['icon']}.png'),
+                              // color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          title: Container(
+                            margin: EdgeInsets.only(left: 30.0),
+                            child: Text(
+                              data['title'],
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                                
+                          // 何人入っているか
+                          trailing: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              border: Border.all(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            width: MediaQuery.of(context).size.width / 5,
+                            height: 50,
+                            child: Text(
+                              '${data['members']}名',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                      child: ListTile(
-                        // 部屋のタイトル
-                        leading: Container(
-                          width: 50,
-                          child: Image(
-                            image: AssetImage('images/${data['icon']}.png'),
-                            // color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                        title: Container(
-                          margin: EdgeInsets.only(left: 30.0),
-                          child: Text(
-                            data['title'],
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                            ),
-                          ),
-                        ),
-            
-                        // 何人入っているか
-                        trailing: Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(
-                              color: Colors.grey,
-                            ),
-                          ),
-                          width: MediaQuery.of(context).size.width / 5,
-                          height: 50,
-                          child: Text(
-                            '${data['members']}名',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        onTap: (){
-                          Firestore.getUsersMessages(widget.uid).then((messages) {
-                            if (data['title'] == 'Room01') {
-                              Firestore.addUsers(document.id, widget.uid).then((_) {
-                                Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => StudyRoom01(data['title'], document.id, widget.uid, messages.initialMessage, messages.progressMessage, messages.lastMessage, messages.color, messages.imageIndex),
-                                ));
-                              });
-                            } else if (data['title'] == 'Room02') {
-                              Firestore.addUsers(document.id, widget.uid).then((_) {
-                                Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => StudyRoom02(data['title'], document.id, widget.uid, messages.initialMessage, messages.progressMessage, messages.lastMessage, messages.color, messages.imageIndex),
-                                ));
-                              });
-                            } else if (data['title'] == 'Room03') {
-                              Firestore.addUsers(document.id, widget.uid).then((_) {
-                                Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => StudyRoom03(data['title'], document.id, widget.uid, messages.initialMessage, messages.progressMessage, messages.lastMessage, messages.color, messages.imageIndex,
-                                )));
-                              });
-                            } else {
-                              Firestore.addUsers(document.id, widget.uid).then((_) {
-                                Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => StudyPage(data['title'], document.id, widget.uid, messages.initialMessage, messages.progressMessage, messages.lastMessage, messages.color, messages.imageIndex)
-                                ));
-                              });
-                            }
-                          });
-                        },
-                      ),
-
                     );
                   }).toList(),
-
                 );
               }
             ),

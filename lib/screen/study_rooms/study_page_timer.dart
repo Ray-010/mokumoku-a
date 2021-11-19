@@ -32,14 +32,14 @@ class StudyPageTimer extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                         border: Border(bottom: BorderSide(
-                          color: model.started ? Colors.grey : (Colors.lightBlue[600])!,
+                          color: model.started ? Colors.grey : Colors.black54,
                           width: 5.0, // Underline thickness
                         ))
                     ),
                     child: Text(
                       model.timeToDisplay,
                       style: TextStyle(
-                        color: model.started ? Colors.black : Colors.lightBlue[700],
+                        color: model.started ? Colors.grey : Colors.black87,
                         fontSize: 36,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 3.0,

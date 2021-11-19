@@ -72,33 +72,31 @@ class _StudyPageState extends State<StudyPage> {
           actions: [
             TextButton(
               onPressed: (){
-                Firestore.sendMessage(widget.documentId, widget.myUid, widget.lastMessage, widget.color, widget.imageIndex).then((_) {
-                  Firestore.getOutRoom(widget.documentId, widget.myUid);
-                }).then((_) {
-                  Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => RoomsTopPage(widget.myUid),
-                  ));
-                });
-              }, 
-              child: Text('退出')
-            ),
-            TextButton(
-              onPressed: (){
                 Navigator.pop(context);
               }, 
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(10.0)
+              child: Text(
+                'キャンセル',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.2,
                 ),
-                child: Text(
-                  'キャンセル',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                    letterSpacing: 1.2,
-                  ),
+              )
+            ),
+            TextButton(
+              onPressed: () async{
+                await Firestore.sendMessage(widget.documentId, widget.myUid, widget.lastMessage, widget.color, widget.imageIndex);
+                await Firestore.getOutRoom(widget.documentId, widget.myUid);
+                await Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) => RoomsTopPage(widget.myUid),
+                ));
+              }, 
+              child: Text(
+                '退出',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.2,
                 ),
               )
             ),
@@ -116,7 +114,6 @@ class _StudyPageState extends State<StudyPage> {
 
   @override
   Future<void> dispose() async {
-    print('dispose done');
     Firestore.sendMessage(widget.documentId, widget.myUid, widget.lastMessage, widget.color, widget.imageIndex);
     Firestore.getOutRoom(widget.documentId, widget.myUid);
     super.dispose();
@@ -140,16 +137,14 @@ class _StudyPageState extends State<StudyPage> {
             letterSpacing: 3.0,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.double_arrow),
-            iconSize: 30.0,
-            color: Theme.of(context).primaryColor,
-            onPressed: (){
-              _showAlertDialog(context);
-            }, 
-          )
-        ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new),
+          iconSize: 28.0,
+          color: Theme.of(context).primaryColor,
+          onPressed: (){
+            _showAlertDialog(context);
+          }, 
+        ),
       ),
       body: Column(
         children: [
