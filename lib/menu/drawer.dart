@@ -8,7 +8,7 @@ class DrawerPage extends StatelessWidget {
   DrawerPage(this.uid);
 
   Future _launchUrl() async {
-    var url = "https://forms.gle/9b9cMQSbr8dK15Gp7";
+    var url = "https://docs.google.com/forms/d/e/1FAIpQLSdo3D3qdsVj1sgccQajPFBsOV1E4vLPBduNmuSzeqqKKRT7vA/viewform";
     if (await canLaunch(url)) {
       await launch(url);
     } else {
