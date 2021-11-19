@@ -40,6 +40,18 @@ class TimerProvider extends ChangeNotifier {
       } else if(this.timeForTimer < 60) {
         this.timeToDisplay = '00:00:'+this.timeForTimer.toString().padLeft(2, "0");
         this.timeForTimer += 1;
+
+        // TODO: JPHACKS用のテスト, ハッカソン終了後消去
+        if(timeForTimer % 10 == 0) {
+          Firestore.sendMessage(
+            roomDocumentId, 
+            uid, 
+            "$progressMessage  --$timeForTimer秒経過", 
+            color,
+            imageIndex
+          );
+        }
+        
       } else if(this.timeForTimer < 3600) {
         int m = (this.timeForTimer / 60).floor();
         int s = this.timeForTimer - (60*m);

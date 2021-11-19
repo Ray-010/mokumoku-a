@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mokumoku_a/screen/study_rooms/rooms_top_page.dart';
 import 'package:mokumoku_a/screen/study_rooms/study_room_ui/timer_02.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
 import 'package:intl/intl.dart' as intl;
@@ -57,29 +58,60 @@ class _StudyRoom02State extends State<StudyRoom02> {
     'images/MokuMoku_alpha_icon_06.PNG',
   ];
 
-  String initialMessage = '';
-  String progressMessage = '';
-  String lastMessage = '';
-  int color = 0;
-  int imageIndex = 0;
+  _showAlertDialog(context) {
+    return showDialog<void>(
+      context: context, 
+      barrierDismissible: true, // ダイアログ外側をタップして閉じる
+      useSafeArea: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('本当に退出しますか？'),
+          actions: [
+            TextButton(
+              onPressed: (){
+                Navigator.pop(context);
+              }, 
+              child: Text(
+                'キャンセル',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.2,
+                ),
+              )
+            ),
+            TextButton(
+              onPressed: () async{
+                await Firestore.sendMessage(widget.documentId, widget.myUid, widget.lastMessage, widget.color, widget.imageIndex);
+                await Firestore.getOutRoom(widget.documentId, widget.myUid);
+                await Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) => RoomsTopPage(widget.myUid),
+                ));
+              }, 
+              child: Text(
+                '退出',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.2,
+                ),
+              )
+            ),
+          ],
+        );
+      }
+    );
+  }
 
   @override
   void initState() {
-    Firestore.getUsersMessages(widget.myUid).then((messages) {
-      initialMessage = messages.initialMessage;
-      progressMessage = messages.progressMessage;
-      lastMessage = messages.lastMessage;
-      color = messages.color;
-      imageIndex = messages.imageIndex;
-    }).then((_) {
-      Firestore.sendMessage(widget.documentId, widget.myUid, initialMessage, color, imageIndex);
-    });
+    Firestore.sendMessage(widget.documentId, widget.myUid, widget.initialMessage, widget.color, widget.imageIndex);
     super.initState();
   }
 
   @override
   Future<void> dispose() async {
-    Firestore.sendMessage(widget.documentId, widget.myUid, lastMessage, color, imageIndex);
+    Firestore.sendMessage(widget.documentId, widget.myUid, widget.lastMessage, widget.color, widget.imageIndex);
     Firestore.getOutRoom(widget.documentId, widget.myUid);
     super.dispose();
   }
@@ -90,13 +122,23 @@ class _StudyRoom02State extends State<StudyRoom02> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.0,
+        centerTitle: true,
+        backgroundColor: Colors.blue,
         title:  Text(
           widget.title,
           style: TextStyle(
-            // color: Colors.black,
+            color: Colors.white,
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new),
+          iconSize: 28.0,
+          color: Colors.white,
+          onPressed: (){
+            _showAlertDialog(context);
+          }, 
         ),
       ),
 
