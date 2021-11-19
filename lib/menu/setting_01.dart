@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:mokumoku_a/model/user.dart';
 import 'package:mokumoku_a/utils/firebase.dart';
 
 // 設定画面に来た時
@@ -14,9 +13,6 @@ class SettingPage01 extends StatefulWidget {
 }
 
 class _SettingPage01State extends State<SettingPage01> {
-  // TODO：何も変更が無いとき⇒戻れる・保存ボタン押せない
-  // TODO：変更したが保存していないとき⇒戻るときにダイアログ表示・保存ボタン表示
-  // TODO：変更して保存した⇒戻れる・保存ボタン押せない
 
   String initialMessage = '';
   String progressMessage = '';

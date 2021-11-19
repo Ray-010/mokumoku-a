@@ -170,18 +170,6 @@ class _RoomsTopPageTestState extends State<RoomsTopPageTest> {
                   children: snapshot.data!.docs.map((DocumentSnapshot document) {
                     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
               
-                    // 終了後に新たに入れないようにする
-                    var finished = data['finishedTime'].toDate();
-                    var now = DateTime.now();
-                    var time = finished.difference(now).inSeconds;
-                    if (time <= 0) {
-                      // 終了済み ＝ 入れない
-                      roomIn = false;
-                      Firestore.updateRoomIn(document.id, roomIn);
-                    } else {
-                      roomIn = true;
-                    }
-              
                     return Card(
                         child: ListTile(
                           tileColor: data['roomIn'] ? Colors.white : Colors.black12,
