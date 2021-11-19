@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:mokumoku_a/menu/setting_01.dart';
-import 'package:mokumoku_a/menu/test.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DrawerPage extends StatelessWidget {
   String uid;
   DrawerPage(this.uid);
+
+  Future _launchUrl() async {
+    var url = "https://forms.gle/9b9cMQSbr8dK15Gp7";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Unable to launch url $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +57,7 @@ class DrawerPage extends StatelessWidget {
             onTap: (){
               // 一旦戻れるように変更
               Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MyHomePage(),
-                ),
-              );
+              _launchUrl();
             },
           ),
 
