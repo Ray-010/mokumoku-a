@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mokumoku_a/menu/about_mokumoku.dart';
 import 'package:mokumoku_a/menu/setting_01.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -42,7 +43,10 @@ class DrawerPage extends StatelessWidget {
               ),
             ),
             onTap: (){
-              print('MokuMokuについての説明');
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => AboutMokuMokuPage(),
+              ));
             },
           ),
 
@@ -55,7 +59,6 @@ class DrawerPage extends StatelessWidget {
               ),
             ),
             onTap: (){
-              // 一旦戻れるように変更
               Navigator.pop(context);
               _launchUrl();
             },
@@ -74,23 +77,20 @@ class DrawerPage extends StatelessWidget {
               Navigator.push(context, MaterialPageRoute(
                 builder: (context) => SettingPage01(uid),
               ));
-              // Navigator.push(context, MaterialPageRoute(
-              //   builder: (context) => SettingPage(uid),
-              // ));
             },
           ),
-          ListTile(
-            leading: Icon(Icons.share),
-            title: Text(
-              'シェア',
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-            onTap: (){
-              print('SHARE');
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.share),
+          //   title: Text(
+          //     'シェア',
+          //     style: TextStyle(
+          //       fontSize: 20,
+          //     ),
+          //   ),
+          //   onTap: (){
+          //     print('SHARE');
+          //   },
+          // ),
         ],
       ),
     );
