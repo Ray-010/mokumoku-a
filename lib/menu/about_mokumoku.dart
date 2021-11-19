@@ -16,7 +16,8 @@ class AboutMokuMokuPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              Padding(
+              Container(
+                alignment: Alignment.center,
                 padding: const EdgeInsets.only(bottom: 5),
                 child: Text(
                   'MokuMokuとは？',
@@ -38,8 +39,9 @@ class AboutMokuMokuPage extends StatelessWidget {
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.only(bottom: 5),
                 child: Text(
                   '使い方',
                   style: TextStyle(
@@ -57,8 +59,9 @@ class AboutMokuMokuPage extends StatelessWidget {
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.only(bottom: 5),
                 child: Text(
                   '勉強部屋',
                   style: TextStyle(
@@ -75,8 +78,9 @@ class AboutMokuMokuPage extends StatelessWidget {
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.only(bottom: 5),
                 child: Text(
                   'メッセージ',
                   style: TextStyle(
@@ -94,8 +98,9 @@ class AboutMokuMokuPage extends StatelessWidget {
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.only(bottom: 5),
                 child: Text(
                   'アイコン',
                   style: TextStyle(
