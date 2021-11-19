@@ -18,15 +18,6 @@ class Firestore {
     return myProfile;
   }
 
-  // 部屋にはいれるかどうか 入れなくなったらモデルのroomInをfalseに変更
-  static Future<void> updateRoomIn(documentId, roomIn) {
-    return roomRef
-        .doc(documentId)
-        .update({'roomIn': roomIn })
-        .then((value) => print("User Updated"))
-        .catchError((error) => print("Failed to update user: $error"));
-  }
-
   // rooms > 部屋のドキュメント > 値・usersのコレクション, 部屋のユーザについての処理
   // 部屋に入るときにroomsのusersにuserを追加
   static Future<void> addUsers(roomId, userDocumentId) async {
